@@ -1,6 +1,6 @@
 def vigenere_cipher(texto, key, mode='encrypt'):
     # Definir el alfabeto
-    alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZzyxwvutsrqponmlkjihgfedcba'
+    alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZzyxwvutsrqponmlkjihgfedcba0123456789$@!#%'
 
     # Asegurarse de que el mensaje y la clave estén en mayúsculas
     #texto = texto.upper()

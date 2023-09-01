@@ -42,6 +42,7 @@ class MySqldb:
         settings = Settings()
         #self.db_driver = settings.db_driver
         self.db_host = settings.db_host
+        self.db_port = settings.db_port
         self.db_name = settings.db_name
         self.db_user = settings.db_user
         self.db_pass = settings.db_pass
@@ -62,7 +63,8 @@ class MySqldb:
                 "host":self.db_host,
                 "user":self.db_user,
                 "password":self.db_pass,
-                "database":self.db_name
+                "database":self.db_name,
+                "port":self.db_port
             }
             self.connection = msql.connect(**db_config)
         except msql.DatabaseError as e:
