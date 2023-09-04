@@ -4,7 +4,7 @@ import routers
 
 app = FastAPI()
 app.include_router(routers.UsuarioRouter.router)
-#app.include_router(routers.AdministracionRouter.router)
+app.include_router(routers.SeguridadRouter.router)
 
 origins = [
     "http://localhost",

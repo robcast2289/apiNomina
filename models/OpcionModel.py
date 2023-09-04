@@ -19,7 +19,8 @@ where
     ur.IdUsuario = '{usr}' 
     and b.IdModulo = {modulo}
     and c.IdMenu = {menu}
-group by a.IdModulo, a.Nombre, b.IdMenu,b.Nombre,c.IdOpcion,c.Nombre,c.Pagina
+group by a.IdModulo, a.Nombre, b.IdMenu,b.Nombre,c.IdOpcion,c.Nombre,c.Pagina 
+order by c.OrdenMenu asc
 """
         ret = MySqldb().execute_query(query)
         

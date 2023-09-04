@@ -16,8 +16,64 @@ from
     inner join usuario_role ur on r.IdRole = ur.IdRole 
 where ur.IdUsuario = '{usr}' 
 group by a.IdModulo, a.Nombre
+order by a.OrdenMenu asc
 """
         ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    
+    def ObtenerTodosModulos():
+        query = f"""
+select 
+    IdModulo,
+    Nombre,
+    OrdenMenu
+from 
+    modulo
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+
+    def EliminarModulo(id:int):
+        query = f"""
+delete
+from modulo
+where IdModulo = {id}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def InsertarModulo(data,usuario):
+        for campo,valor in data:
+            print(campo)
+            print(valor)
+
+        print(data.Nombre)
+        params = [
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"OrdenMenu",
+                "valor":data.OrdenMenu,
+            },
+            {
+                "nombre":"UsuarioCreacion",
+                "valor":usuario,
+            }
+        ]
+        query = f"""
+insert into modulo
+(Nombre,OrdenMenu,FechaCreacion,UsuarioCreacion)
+values
+(%s,%s,NOW(),%s)
+"""
+        ret = MySqldb().execute_insert(query,params=params)
         
         return ret
         

@@ -110,7 +110,7 @@ class MySqldb:
                     param_value = param["valor"]
 
                     send_params.append(param_value)
-                
+
                 cursor.execute(query,send_params)
 
                 if cursor.description:

@@ -1,1 +1,2 @@
-from routers import (UsuarioRouter)
+from routers import (UsuarioRouter,
+                     SeguridadRouter)
