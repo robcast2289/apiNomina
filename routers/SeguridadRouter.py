@@ -21,5 +21,11 @@ async def modulos_put(IdUsuario,model:ModuloRequest):
 @router.delete("/generales/modulos/{IdModulo}")
 async def modulos_delete(IdModulo):
     ret = ModuloModel.EliminarModulo(IdModulo)
+    
+    return ret
+
+@router.post("/generales/modulos/{IdUsuario}/{IdModulo}")
+async def modulos_post(IdUsuario,IdModulo,model:ModuloRequest):
+    ret = ModuloModel.ActualizarModulo(model,IdUsuario,IdModulo)
     print(ret)
     return ret

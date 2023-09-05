@@ -76,4 +76,41 @@ values
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
+    
+
+    def ActualizarModulo(data,usuario,idmodulo):
+        for campo,valor in data:
+            print(campo)
+            print(valor)
+
+        print(data.Nombre)
+        params = [
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"OrdenMenu",
+                "valor":data.OrdenMenu,
+            },
+            {
+                "nombre":"UsuarioModificacion",
+                "valor":usuario,
+            },
+            {
+                "nombre":"IdModulo",
+                "valor":idmodulo,
+            }            
+        ]
+        query = f"""
+update modulo 
+set Nombre=%s, 
+OrdenMenu=%s, 
+FechaModificacion=NOW(), 
+UsuarioModificacion=%s
+where IdModulo=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
         
