@@ -23,3 +23,105 @@ order by b.OrdenMenu asc
         ret = MySqldb().execute_query(query)
         
         return ret
+    
+    def ObtenerTodosMenus():
+            query = f"""
+    select 
+        a.IdMenu,
+        a.IdModulo,
+        b.Nombre Modulo,
+        a.Nombre,
+        a.OrdenMenu
+    from 
+        menu a, modulo b
+    where a.IdModulo = b.IdModulo
+    """
+            ret = MySqldb().execute_query(query)
+            
+            return ret
+    
+    def EliminarMenu(id:int):
+        query = f"""
+delete
+from menu
+where IdMenu = {id}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def InsertarMenu(data,usuario):
+        for campo,valor in data:
+            print(campo)
+            print(valor)
+
+        print(data.Nombre)
+        params = [
+            {
+                "nombre":"IdModulo",
+                "valor":data.IdModulo,
+            },
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"OrdenMenu",
+                "valor":data.OrdenMenu,
+            },
+            {
+                "nombre":"UsuarioCreacion",
+                "valor":usuario,
+            }
+        ]
+        query = f"""
+insert into menu
+(IdModulo,Nombre,OrdenMenu,FechaCreacion,UsuarioCreacion)
+values
+(%s,%s,%s,NOW(),%s)
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
+    
+
+    def ActualizarMenu(data,usuario,id):
+        for campo,valor in data:
+            print(campo)
+            print(valor)
+
+        print(data.Nombre)
+        params = [
+            {
+                "nombre":"IdModulo",
+                "valor":data.IdModulo,
+            },
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"OrdenMenu",
+                "valor":data.OrdenMenu,
+            },
+            {
+                "nombre":"UsuarioModificacion",
+                "valor":usuario,
+            },
+            {
+                "nombre":"IdMenu",
+                "valor":id,
+            }            
+        ]
+        query = f"""
+update menu 
+set IdModulo=%s, 
+Nombre=%s, 
+OrdenMenu=%s, 
+FechaModificacion=NOW(), 
+UsuarioModificacion=%s
+where IdMenu=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
