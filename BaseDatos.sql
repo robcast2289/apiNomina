@@ -322,10 +322,10 @@ VALUES
 (1, 'Sucursales', 2, 'sucursal.php', NOW(), 'system'),
 (1, 'Generos', 3, 'genero.php', NOW(), 'system'),
 (1, 'Estatus Usuario', 4, 'status_usuario.php', NOW(), 'system'),
-(1, 'Roles', 5, 'role.php', NOW(), 'system'),
-(1, 'Modulos', 6, 'modulo.php', NOW(), 'system'),
-(1, 'Menus', 7, 'menu.php', NOW(), 'system'),
-(1, 'Opciones', 3, 'opcion.php', NOW(), 'system'),
+(1, 'Roles', 5, 'seguridad/generales/roles', NOW(), 'system'),
+(1, 'Modulos', 6, 'seguridad/generales/modulos', NOW(), 'system'),
+(1, 'Menus', 7, 'seguridad/generales/menus', NOW(), 'system'),
+(1, 'Opciones', 3, 'seguridad/generales/opciones', NOW(), 'system'),
 (2, 'Usuarios', 3, 'usuario.php', NOW(), 'system'),
 (2, 'Asignar Roles a un Usuario', 3, 'asignacion_role_usuario.php',NOW(), 'system'),
 (2, 'Asignar Opciones a un Role', 3, 'asignacion_opcion_role.php',NOW(), 'system');
@@ -361,6 +361,7 @@ VALUES
 (1,9,1,1,1,1,1,NOW(),'system'),
 (1,10,1,1,1,1,1,NOW(),'system'),
 (1,11,1,1,1,1,1,NOW(),'system');
+(1,12,1,1,1,1,1,NOW(),'system');
 
 create table tipo_acceso(
     IdTipoAcceso int not null auto_increment,

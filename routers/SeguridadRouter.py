@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from models.ModuloModel import ModuloModel
 from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
+from models.RoleModel import RoleModel
 from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest
 
 
@@ -77,4 +78,26 @@ async def opciones_delete(IdOpcion):
 @router.post("/generales/opciones/{IdUsuario}/{IdOpcion}")
 async def opciones_post(IdUsuario,IdOpcion,model:OpcionRequest):
     ret = OpcionModel.ActualizarOpcion(model,IdUsuario,IdOpcion)
+    return ret
+
+
+# Roles
+@router.get('/generales/roles')
+async def roles_get():
+    roles = RoleModel.ObtenerTodosRoles()
+    return roles
+
+@router.put("/generales/roles/{IdUsuario}")
+async def roles_put(IdUsuario,model:OpcionRequest):
+    RoleModel.InsertarRole(model,IdUsuario)
+    return
+
+@router.delete("/generales/roles/{IdRole}")
+async def roles_delete(IdRole):
+    ret = RoleModel.EliminarRole(IdRole)
+    return ret
+
+@router.post("/generales/roles/{IdUsuario}/{IdRole}")
+async def roles_post(IdUsuario,IdRole,model:OpcionRequest):
+    ret = RoleModel.ActualizarRole(model,IdUsuario,IdRole)
     return ret
