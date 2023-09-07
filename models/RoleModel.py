@@ -14,6 +14,20 @@ class RoleModel:
             
             return ret
     
+    def ObtenerUnicoRole(id):
+            query = f"""
+    select 
+        a.IdRole,
+        a.Nombre
+    from 
+        role a
+    where
+        a.IdRole = {id}
+    """
+            ret = MySqldb().execute_query(query)
+            
+            return ret
+    
     def EliminarRole(id:int):
         query = f"""
 delete
