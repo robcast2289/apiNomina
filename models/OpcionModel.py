@@ -38,7 +38,10 @@ order by c.OrdenMenu asc
         a.Pagina
     from 
         opcion a, menu b
-    where a.IdMenu = b.IdMenu
+    where 
+        a.IdMenu = b.IdMenu
+    order by
+        a.IdMenu,a.OrdenMenu
     """
             ret = MySqldb().execute_query(query)
             
@@ -138,3 +141,43 @@ where IdOpcion=%s
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
+    
+
+    def findOpcionByRoute(strRoute):
+        query = f"""
+    select 
+        IdOpcion,
+        Nombre,
+        Pagina 
+    from 
+        opcion 
+    where 
+    '{strRoute}' like CONCAT(REPLACE(Pagina,'/','-'),'%')
+    """
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def tieneAcceso(IdUsuario,IdOpcion):
+        query = f"""
+select 
+    a.IdModulo,
+    a.Nombre 
+from 
+    modulo a 
+    inner join menu b on a.IdModulo = b.IdModulo 
+    inner join opcion c on b.IdMenu = c.IdMenu 
+    inner join role_opcion ro on c.IdOpcion = ro.IdOpcion 
+    inner join role r on ro.IdRole = r.IdRole 
+    inner join usuario_role ur on r.IdRole = ur.IdRole 
+where ur.IdUsuario = '{IdUsuario}' 
+and c.IdOpcion = {IdOpcion}
+order by a.OrdenMenu asc
+"""
+        ret = MySqldb().execute_query(query)
+
+        try:
+            registro = ret[0]
+            return True
+        except:
+            return False

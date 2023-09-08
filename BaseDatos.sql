@@ -147,11 +147,11 @@ FechaModificacion, UsuarioModificacion
 )
 VALUES
 /*
-('system', 'Nologin', 'Nologin', '1990-05-15', 1,MD5('erpwijoeli'), 1, NULL, 0,NULL, NULL, 'system@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL),
+('system', 'Nologin', 'Nologin', '1990-05-15', 1,MD5('UMGMaster2023!'), 1, NULL, 0,NULL, NULL, 'system@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL),
 ('Administrador', 'Administrador', 'IT', '1990-05-15', 1, MD5('ITAdmin'), 1, NULL, 0,NULL, NULL, 'itadmin@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL);
 */
-('system', 'Nologin', 'Nologin', '1990-05-15', 1,MD5('erpwijoeli'), 1, NULL, 0,NULL, NULL, 'system@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL),
-('Administrador', 'Administrador', 'IT', '1990-05-15', 1, 'HFapvYw', 1, NULL, 0,NULL, NULL, 'itadmin@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL);
+('system', 'Nologin', 'Nologin', '1990-05-15', 1,'Eb50y%INPrSvVw', 1, NULL, 0,NULL, NULL, 'system@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL),
+('Administrador', 'Administrador', 'IT', '1990-05-15', 1, '75aVPJO', 1, NULL, 0,NULL, NULL, 'itadmin@example.com',1, NULL, '555-1234567',1, NOW(), 'system', NULL, NULL);
 
 select * from usuario u ;
 

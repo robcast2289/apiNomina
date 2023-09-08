@@ -66,6 +66,16 @@ async def opciones_get():
     opciones = OpcionModel.ObtenerTodosOpciones()
     return opciones
 
+@router.get('/generales/opciones/buscaruta/{IdUsuario}/{ruta}')
+async def opciones_ruta_get(IdUsuario,ruta):
+    print(IdUsuario)
+    print(ruta)
+    if(ruta == 'home'):
+        return True
+    opcionBuscado = OpcionModel.findOpcionByRoute(ruta)[0]
+    acceso = OpcionModel.tieneAcceso(IdUsuario,opcionBuscado["IdOpcion"])
+    return acceso
+
 @router.put("/generales/opciones/{IdUsuario}")
 async def opciones_put(IdUsuario,model:OpcionRequest):
     OpcionModel.InsertarOpcion(model,IdUsuario)
