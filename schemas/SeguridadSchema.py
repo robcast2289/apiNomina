@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class ModuloRequest(BaseModel):
     Nombre:str
@@ -30,3 +31,21 @@ class RoleOpcionRequest(BaseModel):
     Cambio:int
     Imprimir:int
     Exportar:int
+
+
+class UsuarioRequest(BaseModel):
+    IdUsuario:str
+    Nombre:str
+    Apellido:str
+    FechaNacimiento:datetime
+    IdStatusUsuario:int
+    IdGenero:int
+    UltimaFechaIngreso:str
+    IntentosDeAcceso:int
+    SesionActual:str
+    UltimaFechaCambioPassword:datetime
+    CorreoElectronico:str
+    RequiereCambiarPassword:int
+    Fotografia:str
+    TelefonoMovil:str
+    IdSucursal:int

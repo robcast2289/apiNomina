@@ -4,33 +4,39 @@ from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
 from models.RoleModel import RoleModel
 from models.RoleOpcionModel import RoleOpcionModel
+from models.UsuarioTableModel import UsuarioTableModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 
 router = APIRouter(
     prefix="/seguridad",
-    tags=["Seguridad"],
+    #tags=["Seguridad"],
 )
+
 
 # GENERALES
 
 # Modulos
-@router.get('/generales/modulos')
+routerModulo = APIRouter(
+    tags=["Modulos"],
+)
+
+@routerModulo.get('/generales/modulos')
 async def modulos_get():
     modulos = ModuloModel.ObtenerTodosModulos()
     return modulos
 
-@router.put("/generales/modulos/{IdUsuario}")
+@routerModulo.put("/generales/modulos/{IdUsuario}")
 async def modulos_put(IdUsuario,model:ModuloRequest):
     ModuloModel.InsertarModulo(model,IdUsuario)
     return
 
-@router.delete("/generales/modulos/{IdModulo}")
+@routerModulo.delete("/generales/modulos/{IdModulo}")
 async def modulos_delete(IdModulo):
     ret = ModuloModel.EliminarModulo(IdModulo)
     return ret
 
-@router.post("/generales/modulos/{IdUsuario}/{IdModulo}")
+@routerModulo.post("/generales/modulos/{IdUsuario}/{IdModulo}")
 async def modulos_post(IdUsuario,IdModulo,model:ModuloRequest):
     ret = ModuloModel.ActualizarModulo(model,IdUsuario,IdModulo)
     print(ret)
@@ -39,34 +45,42 @@ async def modulos_post(IdUsuario,IdModulo,model:ModuloRequest):
 
 
 # Menus
-@router.get('/generales/menus')
+routerMenu = APIRouter(
+    tags=["Menus"],
+)
+
+@routerMenu.get('/generales/menus')
 async def menus_get():
     menus = MenuModel.ObtenerTodosMenus()
     return menus
 
-@router.put("/generales/menus/{IdUsuario}")
+@routerMenu.put("/generales/menus/{IdUsuario}")
 async def menus_put(IdUsuario,model:MenuRequest):
     MenuModel.InsertarMenu(model,IdUsuario)
     return
 
-@router.delete("/generales/menus/{IdMenu}")
+@routerMenu.delete("/generales/menus/{IdMenu}")
 async def menus_delete(IdMenu):
     ret = MenuModel.EliminarMenu(IdMenu)
     return ret
 
-@router.post("/generales/menus/{IdUsuario}/{IdMenu}")
+@routerMenu.post("/generales/menus/{IdUsuario}/{IdMenu}")
 async def menus_post(IdUsuario,IdMenu,model:MenuRequest):
     ret = MenuModel.ActualizarMenu(model,IdUsuario,IdMenu)
     return ret
 
 
 # Opciones
-@router.get('/generales/opciones')
+routerOpcion = APIRouter(
+    tags=["Opciones"],
+)
+
+@routerOpcion.get('/generales/opciones')
 async def opciones_get():
     opciones = OpcionModel.ObtenerTodosOpciones()
     return opciones
 
-@router.get('/generales/opciones/buscaruta/{IdUsuario}/{ruta}')
+@routerOpcion.get('/generales/opciones/buscaruta/{IdUsuario}/{ruta}')
 async def opciones_ruta_get(IdUsuario,ruta):
     print(IdUsuario)
     print(ruta)
@@ -76,66 +90,113 @@ async def opciones_ruta_get(IdUsuario,ruta):
     acceso = OpcionModel.tieneAcceso(IdUsuario,opcionBuscado["IdOpcion"])
     return acceso
 
-@router.put("/generales/opciones/{IdUsuario}")
+@routerOpcion.put("/generales/opciones/{IdUsuario}")
 async def opciones_put(IdUsuario,model:OpcionRequest):
     OpcionModel.InsertarOpcion(model,IdUsuario)
     return
 
-@router.delete("/generales/opciones/{IdOpcion}")
+@routerOpcion.delete("/generales/opciones/{IdOpcion}")
 async def opciones_delete(IdOpcion):
     ret = OpcionModel.EliminarOpcion(IdOpcion)
     return ret
 
-@router.post("/generales/opciones/{IdUsuario}/{IdOpcion}")
+@routerOpcion.post("/generales/opciones/{IdUsuario}/{IdOpcion}")
 async def opciones_post(IdUsuario,IdOpcion,model:OpcionRequest):
     ret = OpcionModel.ActualizarOpcion(model,IdUsuario,IdOpcion)
     return ret
 
 
 # Roles
-@router.get('/generales/roles/{IdRole}')
+routerRole = APIRouter(
+    tags=["Roles"],
+)
+
+@routerRole.get('/generales/roles/{IdRole}')
 async def roles_get(IdRole):
     roles = RoleModel.ObtenerUnicoRole(IdRole)
     return roles[0]
 
-@router.get('/generales/roles')
+@routerRole.get('/generales/roles')
 async def roles_get():
     roles = RoleModel.ObtenerTodosRoles()
     return roles
 
-@router.put("/generales/roles/{IdUsuario}")
+@routerRole.put("/generales/roles/{IdUsuario}")
 async def roles_put(IdUsuario,model:RoleRequest):
     RoleModel.InsertarRole(model,IdUsuario)
     return
 
-@router.delete("/generales/roles/{IdRole}")
+@routerRole.delete("/generales/roles/{IdRole}")
 async def roles_delete(IdRole):
     ret = RoleModel.EliminarRole(IdRole)
     return ret
 
-@router.post("/generales/roles/{IdUsuario}/{IdRole}")
+@routerRole.post("/generales/roles/{IdUsuario}/{IdRole}")
 async def roles_post(IdUsuario,IdRole,model:RoleRequest):
     ret = RoleModel.ActualizarRole(model,IdUsuario,IdRole)
     return ret
 
 
 # Role-Opciones
-@router.get('/generales/rolesopcion/{IdRole}')
+routerRoleOpcion = APIRouter(
+    tags=["RoleOpciones"],
+)
+
+@routerRoleOpcion.get('/generales/rolesopcion/{IdRole}')
 async def roles_get(IdRole):
     rolesopcion = RoleOpcionModel.ObtenerTodosRoleOpcion(IdRole)
     return rolesopcion
 
-@router.put("/generales/rolesopcion/{IdUsuario}")
+@routerRoleOpcion.put("/generales/rolesopcion/{IdUsuario}")
 async def rolesopcion_put(IdUsuario,model:RoleOpcionRequest):
     RoleOpcionModel.InsertarRoleOpcion(model,IdUsuario)
     return
 
-@router.delete("/generales/rolesopcion/{IdRole}/{IdOpcion}")
+@routerRoleOpcion.delete("/generales/rolesopcion/{IdRole}/{IdOpcion}")
 async def rolesopcion_delete(IdRole,IdOpcion):
     ret = RoleOpcionModel.EliminarRoleOpcion(IdRole,IdOpcion)
     return ret
 
-@router.post("/generales/rolesopcion/{IdUsuario}/{IdRole}/{IdOpcion}")
+@routerRoleOpcion.post("/generales/rolesopcion/{IdUsuario}/{IdRole}/{IdOpcion}")
 async def rolesopcion_post(IdUsuario,IdRole,IdOpcion,model:RoleOpcionRequest):
     ret = RoleOpcionModel.ActualizarRoleOpcion(model,IdUsuario,IdRole,IdOpcion)
     return ret
+
+
+# Usuarios
+routerUsuario = APIRouter(
+    tags=["Usuarios"],
+)
+
+@routerUsuario.get('/generales/usuarios/{IdUsuario}')
+async def usuarios_get(IdUsuarioTable):
+    usuarios = UsuarioTableModel.ObtenerUnicoUsuarios(IdUsuarioTable)
+    return usuarios[0]
+
+@routerUsuario.get('/generales/usuarios')
+async def usuarios_get():
+    usuarios = UsuarioTableModel.ObtenerTodosUsuarios()
+    return usuarios
+
+@routerUsuario.put("/generales/usuarios/{IdUsuario}")
+async def usuarios_put(IdUsuario,model:UsuarioRequest):
+    UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
+    return
+
+@routerUsuario.delete("/generales/usuarios/{IdUsuarioTable}")
+async def usuarios_delete(IdUsuarioTable):
+    ret = UsuarioTableModel.EliminarUsuarios(IdUsuarioTable)
+    return ret
+
+@routerUsuario.post("/generales/usuarios/{IdUsuario}/{IdUsuarioTable}")
+async def usuarios_post(IdUsuario,IdUsuarioTable,model:UsuarioRequest):
+    ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
+    return ret
+
+
+router.include_router(routerModulo)
+router.include_router(routerMenu)
+router.include_router(routerOpcion)
+router.include_router(routerRole)
+router.include_router(routerRoleOpcion)
+router.include_router(routerUsuario)
