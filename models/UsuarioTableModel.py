@@ -10,7 +10,9 @@ class UsuarioTableModel:
         a.Apellido,
         a.FechaNacimiento,
         a.IdStatusUsuario,
+        b.Nombre Status,
         a.IdGenero,
+        c.Nombre Genero,
         a.UltimaFechaIngreso,
         a.IntentosDeAcceso,
         a.SesionActual,
@@ -19,9 +21,17 @@ class UsuarioTableModel:
         a.RequiereCambiarPassword,
         a.Fotografia,
         a.TelefonoMovil,
-        a.IdSucursal
+        a.IdSucursal,
+        d.Nombre Sucursal
     from 
-        usuario a
+        usuario a,
+        status_usuario b, 
+        genero c, 
+        sucursal d 
+    where
+        a.IdStatusUsuario = b.IdStatusUsuario
+        and a.IdGenero = c.IdGenero
+        and a.IdSucursal = d.IdSucursal
     """
             ret = MySqldb().execute_query(query)
             

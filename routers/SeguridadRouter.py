@@ -168,7 +168,7 @@ routerUsuario = APIRouter(
     tags=["Usuarios"],
 )
 
-@routerUsuario.get('/generales/usuarios/{IdUsuario}')
+@routerUsuario.get('/generales/usuarios/{IdUsuarioTable}')
 async def usuarios_get(IdUsuarioTable):
     usuarios = UsuarioTableModel.ObtenerUnicoUsuarios(IdUsuarioTable)
     return usuarios[0]
