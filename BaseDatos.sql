@@ -261,7 +261,7 @@ Nombre, OrdenMenu, FechaCreacion, UsuarioCreacion
 )
 VALUES
 (
-'Seguridad', 1, NOW(), 'system'
+'Configuración', 1, NOW(), 'system'
 ),
 (
 'Planilla', 2, NOW(), 'system'
@@ -290,13 +290,16 @@ VALUES
 1, 'Parametros Generales', 1, NOW(), 'system'
 ),
 (
-1, 'Acciones', 2, NOW(), 'system'
+1, 'Menu y accesos', 2, NOW(), 'system'
 ),
 (
-1, 'Estadisticas', 3, NOW(), 'system'
+1, 'Seguridad', 3, NOW(), 'system'
 ),
 (
-1, 'Procedimientos Almacenados', 4, NOW(), 'system'
+1, 'Estadisticas', 4, NOW(), 'system'
+),
+(
+1, 'Procedimientos Almacenados', 5, NOW(), 'system'
 );
 select * from menu;
 
@@ -318,17 +321,17 @@ create table opcion(
 INSERT INTO opcion 
 (IdMenu, Nombre, OrdenMenu, Pagina, FechaCreacion, UsuarioCreacion)
 VALUES
-(1, 'Empresas', 1, 'empresa.php', NOW(), 'system'),
-(1, 'Sucursales', 2, 'sucursal.php', NOW(), 'system'),
-(1, 'Generos', 3, 'genero.php', NOW(), 'system'),
-(1, 'Estatus Usuario', 4, 'status_usuario.php', NOW(), 'system'),
-(1, 'Roles', 5, 'seguridad/generales/roles', NOW(), 'system'),
-(1, 'Modulos', 6, 'seguridad/generales/modulos', NOW(), 'system'),
-(1, 'Menus', 7, 'seguridad/generales/menus', NOW(), 'system'),
-(1, 'Opciones', 3, 'seguridad/generales/opciones', NOW(), 'system'),
-(2, 'Usuarios', 3, 'usuario.php', NOW(), 'system'),
-(2, 'Asignar Roles a un Usuario', 3, 'asignacion_role_usuario.php',NOW(), 'system'),
-(2, 'Asignar Opciones a un Role', 3, 'asignacion_opcion_role.php',NOW(), 'system');
+(1, 'Empresas', 1, 'seguridad/generales/empresa', NOW(), 'system'),
+(1, 'Sucursales', 2, 'seguridad/generales/sucursales', NOW(), 'system'),
+(1, 'Generos', 3, 'seguridad/generales/generos', NOW(), 'system'),
+(1, 'Estatus Usuario', 4, 'seguridad/generales/statususer', NOW(), 'system'),
+(2, 'Modulos', 1, 'seguridad/generales/modulos', NOW(), 'system'),
+(2, 'Menus', 2, 'seguridad/generales/menus', NOW(), 'system'),
+(2, 'Opciones', 3, 'seguridad/generales/opciones', NOW(), 'system'),
+(3, 'Usuarios', 1, 'seguridad/generales/usuarios', NOW(), 'system'),
+(3, 'Roles', 2, 'seguridad/generales/roles', NOW(), 'system'),
+(3, 'Asignar Roles a un Usuario', 3, 'asignacion_role_usuario.php',NOW(), 'system'),
+(3, 'Asignar Opciones a un Role', 4, 'asignacion_opcion_role.php',NOW(), 'system');
 select * from opcion o ;
 
 create table role_opcion(
@@ -361,7 +364,6 @@ VALUES
 (1,9,1,1,1,1,1,NOW(),'system'),
 (1,10,1,1,1,1,1,NOW(),'system'),
 (1,11,1,1,1,1,1,NOW(),'system');
-(1,12,1,1,1,1,1,NOW(),'system');
 
 create table tipo_acceso(
     IdTipoAcceso int not null auto_increment,
