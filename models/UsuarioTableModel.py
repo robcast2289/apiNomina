@@ -68,7 +68,7 @@ class UsuarioTableModel:
         query = f"""
 delete
 from usuario
-where IdUsuario = {id}
+where IdUsuario = '{id}'
 """
         ret = MySqldb().execute_query(query)
         
@@ -77,10 +77,17 @@ where IdUsuario = {id}
     def InsertarUsuarios(data,usuario):
 
         params = [
-            {
-                "nombre":"Nombre",
-                "valor":data.Nombre,
-            },
+            {"nombre":"IdUsuario","valor":data.UsuarioNuevo,},
+            {"nombre":"Nombre","valor":data.Nombre,},
+            {"nombre":"Apellido","valor":data.Apellido,},
+            {"nombre":"FechaNacimiento","valor":data.FechaNacimiento,},
+            {"nombre":"IdStatusUsuario","valor":data.IdStatusUsuario,},
+            {"nombre":"IdGenero","valor":data.IdGenero,},
+            {"nombre":"CorreoElectronico","valor":data.CorreoElectronico,},
+            #{"nombre":"Fotografia","valor":data.Fotografia,},
+            {"nombre":"TelefonoMovil","valor":data.TelefonoMovil,},
+            {"nombre":"IdSucursal","valor":data.IdSucursal,},
+            {"nombre":"Passwrod","valor":data.Password,},
             {
                 "nombre":"UsuarioCreacion",
                 "valor":usuario,
@@ -95,18 +102,14 @@ Apellido,
 FechaNacimiento,
 IdStatusUsuario,
 IdGenero,
-UltimaFechaIngreso,
-IntentosDeAcceso,
-SesionActual,
-UltimaFechaCambioPassword,
 CorreoElectronico,
-RequiereCambiarPassword,
-Fotografia,
+
 TelefonoMovil,
-IdSucursal
+IdSucursal,
+Password,
 FechaCreacion,UsuarioCreacion)
 values
-(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
+(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
 """
         ret = MySqldb().execute_insert(query,params=params)
         

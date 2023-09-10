@@ -32,6 +32,18 @@ class RoleOpcionRequest(BaseModel):
     Imprimir:int
     Exportar:int
 
+class UsuarioNuevoRequest(BaseModel):
+    UsuarioNuevo:str
+    Nombre:str
+    Apellido:str
+    FechaNacimiento:datetime
+    IdStatusUsuario:int
+    IdGenero:int
+    IdSucursal:int
+    TelefonoMovil:str
+    CorreoElectronico:str
+    Password:str
+    #Fotografia:str
 
 class UsuarioRequest(BaseModel):
     IdUsuario:str

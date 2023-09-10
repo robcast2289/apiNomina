@@ -5,6 +5,9 @@ from models.OpcionModel import OpcionModel
 from models.RoleModel import RoleModel
 from models.RoleOpcionModel import RoleOpcionModel
 from models.UsuarioTableModel import UsuarioTableModel
+from models.StatusUsuarioModel import StatusUsuarioModel
+from models.GeneroModel import GeneroModel
+from models.SucursalModel import SucursalModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 
@@ -179,9 +182,9 @@ async def usuarios_get():
     return usuarios
 
 @routerUsuario.put("/generales/usuarios/{IdUsuario}")
-async def usuarios_put(IdUsuario,model:UsuarioRequest):
-    UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
-    return
+async def usuarios_put(IdUsuario,model:UsuarioNuevoRequest):
+    ret = UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
+    return ret
 
 @routerUsuario.delete("/generales/usuarios/{IdUsuarioTable}")
 async def usuarios_delete(IdUsuarioTable):
@@ -194,9 +197,41 @@ async def usuarios_post(IdUsuario,IdUsuarioTable,model:UsuarioRequest):
     return ret
 
 
+# Status Usuarios
+routerStatusUsuario = APIRouter(
+    tags=["Status Usuarios"],
+)
+@routerStatusUsuario.get('/generales/statususuario')
+async def statusUsuarios_get():
+    statususuario = StatusUsuarioModel.ObtenerStatusUsuario()
+    return statususuario
+
+
+# Generos
+routerGenero = APIRouter(
+    tags=["Generos"],
+)
+@routerGenero.get('/generales/genero')
+async def generos_get():
+    genero = GeneroModel.ObtenerGenero()
+    return genero
+
+
+# Sucursales
+routerSucursal = APIRouter(
+    tags=["Sucursales"],
+)
+@routerSucursal.get('/generales/sucursal')
+async def sucursales_get():
+    sucursal = SucursalModel.ObtenerSucursal()
+    return sucursal
+
 router.include_router(routerModulo)
 router.include_router(routerMenu)
 router.include_router(routerOpcion)
 router.include_router(routerRole)
 router.include_router(routerRoleOpcion)
 router.include_router(routerUsuario)
+router.include_router(routerStatusUsuario)
+router.include_router(routerGenero)
+router.include_router(routerSucursal)
