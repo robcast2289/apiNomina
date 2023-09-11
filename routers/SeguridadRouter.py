@@ -5,6 +5,7 @@ from models.OpcionModel import OpcionModel
 from models.RoleModel import RoleModel
 from models.RoleOpcionModel import RoleOpcionModel
 from models.UsuarioTableModel import UsuarioTableModel
+from models.UsuarioRoleModel import UsuarioRoleModel
 from models.StatusUsuarioModel import StatusUsuarioModel
 from models.GeneroModel import GeneroModel
 from models.SucursalModel import SucursalModel
@@ -197,6 +198,28 @@ async def usuarios_post(IdUsuario,IdUsuarioTable,model:UsuarioRequest):
     return ret
 
 
+# Usuario-Roles
+routerUsuarioRole = APIRouter(
+    tags=["UsuarioRoles"],
+)
+
+@routerUsuarioRole.get('/generales/usuarioroles/{IdUsuarioTable}')
+async def roles_get(IdUsuarioTable):
+    usuarioroles = UsuarioRoleModel.ObtenerTodosUsuarioRole(IdUsuarioTable)
+    return usuarioroles
+
+@routerUsuarioRole.put("/generales/usuarioroles/{IdUsuario}")
+async def usuarioroles_put(IdUsuario,model:RoleOpcionRequest):
+    UsuarioRoleModel.InsertarUsuarioRole(model,IdUsuario)
+    return
+
+@routerUsuarioRole.delete("/generales/usuarioroles/{IdUsuarioTable}/{IdRole}")
+async def usuarioroles_delete(IdUsuarioTable,IdRole):
+    ret = UsuarioRoleModel.EliminarUsuarioRole(IdUsuarioTable,IdRole)
+    return ret
+
+
+
 # Status Usuarios
 routerStatusUsuario = APIRouter(
     tags=["Status Usuarios"],
@@ -232,6 +255,7 @@ router.include_router(routerOpcion)
 router.include_router(routerRole)
 router.include_router(routerRoleOpcion)
 router.include_router(routerUsuario)
+router.include_router(routerUsuarioRole)
 router.include_router(routerStatusUsuario)
 router.include_router(routerGenero)
 router.include_router(routerSucursal)

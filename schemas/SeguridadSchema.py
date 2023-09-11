@@ -45,6 +45,7 @@ class UsuarioNuevoRequest(BaseModel):
     Password:str
     #Fotografia:str
 
+
 class UsuarioRequest(BaseModel):
     IdUsuario:str
     Nombre:str
