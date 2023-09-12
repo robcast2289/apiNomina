@@ -9,6 +9,7 @@ from models.UsuarioRoleModel import UsuarioRoleModel
 from models.StatusUsuarioModel import StatusUsuarioModel
 from models.GeneroModel import GeneroModel
 from models.SucursalModel import SucursalModel
+from models.UsuarioRoleModel import UsuarioRoleModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 
@@ -209,7 +210,7 @@ async def roles_get(IdUsuarioTable):
     return usuarioroles
 
 @routerUsuarioRole.put("/generales/usuarioroles/{IdUsuario}")
-async def usuarioroles_put(IdUsuario,model:RoleOpcionRequest):
+async def usuarioroles_put(IdUsuario,model:UsuarioRoleRequest):
     UsuarioRoleModel.InsertarUsuarioRole(model,IdUsuario)
     return
 

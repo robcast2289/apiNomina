@@ -62,3 +62,8 @@ class UsuarioRequest(BaseModel):
     Fotografia:str
     TelefonoMovil:str
     IdSucursal:int
+
+
+class UsuarioRoleRequest(BaseModel):
+    IdUsuario:str
+    IdRole:int

@@ -22,7 +22,7 @@ class UsuarioRoleModel:
         query = f"""
 delete
 from usuario_role
-where IdUsuario = {idusuario} 
+where IdUsuario = '{idusuario}' 
 and IdRole = {idrole}
 """
         ret = MySqldb().execute_query(query)
@@ -34,11 +34,11 @@ and IdRole = {idrole}
         params = [
             {
                 "nombre":"IdUsuario",
-                "valor":data.IdRole,
+                "valor":data.IdUsuario,
             },
             {
                 "nombre":"IdRole",
-                "valor":data.IdOpcion,
+                "valor":data.IdRole,
             },
             {
                 "nombre":"UsuarioCreacion",
