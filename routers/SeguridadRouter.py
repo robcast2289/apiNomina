@@ -184,8 +184,9 @@ async def usuarios_get():
     return usuarios
 
 @routerUsuario.put("/generales/usuarios/{IdUsuario}")
-async def usuarios_put(IdUsuario,model:UsuarioNuevoRequest):
+async def usuarios_put(IdUsuario,model:UsuarioRequest):
     ret = UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
+    print(ret)
     return ret
 
 @routerUsuario.delete("/generales/usuarios/{IdUsuarioTable}")

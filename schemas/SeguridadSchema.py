@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 class ModuloRequest(BaseModel):
     Nombre:str
@@ -53,15 +54,15 @@ class UsuarioRequest(BaseModel):
     FechaNacimiento:datetime
     IdStatusUsuario:int
     IdGenero:int
-    UltimaFechaIngreso:str
-    IntentosDeAcceso:int
-    SesionActual:str
-    UltimaFechaCambioPassword:datetime
-    CorreoElectronico:str
-    RequiereCambiarPassword:int
-    Fotografia:str
-    TelefonoMovil:str
     IdSucursal:int
+    TelefonoMovil:str
+    CorreoElectronico:str
+    Password:str
+    Fotografia:Optional[str]
+    UltimaFechaIngreso: Optional[str]
+    IntentosDeAcceso:Optional[int]
+    UltimaFechaCambioPassword: Optional[str]
+    RequiereCambiarPassword:Optional[int]
 
 
 class UsuarioRoleRequest(BaseModel):

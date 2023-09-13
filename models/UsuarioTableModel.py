@@ -22,7 +22,8 @@ class UsuarioTableModel:
         a.Fotografia,
         a.TelefonoMovil,
         a.IdSucursal,
-        d.Nombre Sucursal
+        d.Nombre Sucursal,
+        a.Password
     from 
         usuario a,
         status_usuario b, 
@@ -77,14 +78,15 @@ where IdUsuario = '{id}'
     def InsertarUsuarios(data,usuario):
 
         params = [
-            {"nombre":"IdUsuario","valor":data.UsuarioNuevo,},
+            {"nombre":"IdUsuario","valor":data.IdUsuario,},
             {"nombre":"Nombre","valor":data.Nombre,},
             {"nombre":"Apellido","valor":data.Apellido,},
             {"nombre":"FechaNacimiento","valor":data.FechaNacimiento,},
             {"nombre":"IdStatusUsuario","valor":data.IdStatusUsuario,},
             {"nombre":"IdGenero","valor":data.IdGenero,},
             {"nombre":"CorreoElectronico","valor":data.CorreoElectronico,},
-            #{"nombre":"Fotografia","valor":data.Fotografia,},
+            {"nombre":"RequiereCambiarPassword","valor":data.RequiereCambiarPassword,},
+            {"nombre":"Fotografia","valor":data.Fotografia,},
             {"nombre":"TelefonoMovil","valor":data.TelefonoMovil,},
             {"nombre":"IdSucursal","valor":data.IdSucursal,},
             {"nombre":"Passwrod","valor":data.Password,},
@@ -97,19 +99,20 @@ where IdUsuario = '{id}'
 insert into usuario
 (
 IdUsuario,
-Nombre,
-Apellido,
-FechaNacimiento,
-IdStatusUsuario,
-IdGenero,
-CorreoElectronico,
-
-TelefonoMovil,
+Nombre, 
+Apellido, 
+FechaNacimiento, 
+IdStatusUsuario, 
+IdGenero, 
+CorreoElectronico, 
+RequiereCambiarPassword, 
+Fotografia, 
+TelefonoMovil, 
 IdSucursal,
 Password,
 FechaCreacion,UsuarioCreacion)
 values
-(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
+(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
 """
         ret = MySqldb().execute_insert(query,params=params)
         
