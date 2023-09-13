@@ -76,7 +76,7 @@ where IdUsuario = '{id}'
         return ret
     
     def InsertarUsuarios(data,usuario):
-
+        print(data.Fotografia)
         params = [
             {"nombre":"IdUsuario","valor":data.IdUsuario,},
             {"nombre":"Nombre","valor":data.Nombre,},
@@ -110,16 +110,17 @@ Fotografia,
 TelefonoMovil, 
 IdSucursal,
 Password,
+IntentosDeAcceso,
 FechaCreacion,UsuarioCreacion)
 values
-(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
+(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0,NOW(),%s)
 """
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
     
 
-    def ActualizarUsuarios(data,usuario,id):
+    def ActualizarUsuarios(data,usuario,idusuario):
 
         params = [
             {"nombre":"Nombre","valor":data.Nombre,},
@@ -127,10 +128,7 @@ values
             {"nombre":"FechaNacimiento","valor":data.FechaNacimiento,},
             {"nombre":"IdStatusUsuario","valor":data.IdStatusUsuario,},
             {"nombre":"IdGenero","valor":data.IdGenero,},
-            {"nombre":"UltimaFechaIngreso","valor":data.UltimaFechaIngreso,},
             {"nombre":"IntentosDeAcceso","valor":data.IntentosDeAcceso,},
-            {"nombre":"SesionActual","valor":data.SesionActual,},
-            {"nombre":"UltimaFechaCambioPassword","valor":data.UltimaFechaCambioPassword,},
             {"nombre":"CorreoElectronico","valor":data.CorreoElectronico,},
             {"nombre":"RequiereCambiarPassword","valor":data.RequiereCambiarPassword,},
             {"nombre":"Fotografia","valor":data.Fotografia,},
@@ -138,28 +136,25 @@ values
             {"nombre":"IdSucursal","valor":data.IdSucursal,},
 
             {"nombre":"UsuarioModificacion","valor":usuario,},
-            {"nombre":"IdUsuario","valor":id,}            
+            {"nombre":"IdUsuario","valor":idusuario,}            
         ]
         query = f"""
-update role 
+update usuario 
 set 
 Nombre=%s, 
 Apellido=%s, 
 FechaNacimiento=%s, 
 IdStatusUsuario=%s, 
 IdGenero=%s, 
-UltimaFechaIngreso=%s, 
 IntentosDeAcceso=%s, 
-SesionActual=%s, 
-UltimaFechaCambioPassword=%s, 
 CorreoElectronico=%s, 
 RequiereCambiarPassword=%s, 
 Fotografia=%s, 
 TelefonoMovil=%s, 
-IdSucursal=%s  
+IdSucursal=%s,  
 FechaModificacion=NOW(), 
-UsuarioModificacion=%s
-where IdUsuario=%s
+UsuarioModificacion=%s 
+where IdUsuario=%s 
 """
         ret = MySqldb().execute_insert(query,params=params)
         

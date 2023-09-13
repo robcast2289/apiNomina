@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile
+from starlette.datastructures import UploadFile as upFile
+import json
 from models.ModuloModel import ModuloModel
 from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
@@ -12,6 +14,7 @@ from models.SucursalModel import SucursalModel
 from models.UsuarioRoleModel import UsuarioRoleModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
+from utils.ImagesUtil import ImagesUtil
 
 router = APIRouter(
     prefix="/seguridad",
@@ -184,10 +187,50 @@ async def usuarios_get():
     return usuarios
 
 @routerUsuario.put("/generales/usuarios/{IdUsuario}")
-async def usuarios_put(IdUsuario,model:UsuarioRequest):
+async def usuarios_put(IdUsuario, request:Request):
+    form = await request.form()
+
+    #file = form.get("image0")
+    data = form.get("data")
+    dataObject = json.loads(data)
+    model:UsuarioRequest = UsuarioRequest(
+        IdUsuario=dataObject["IdUsuario"],
+        Nombre=dataObject["Nombre"],
+        Apellido=dataObject["Apellido"],
+        FechaNacimiento=dataObject["FechaNacimiento"],
+        IdStatusUsuario=dataObject["IdStatusUsuario"],
+        IdGenero=dataObject["IdGenero"],
+        IdSucursal=dataObject["IdSucursal"],
+        TelefonoMovil=dataObject["TelefonoMovil"],
+        CorreoElectronico=dataObject["CorreoElectronico"],
+        Password=dataObject["Password"],
+        Fotografia=dataObject["Fotografia"],
+        UltimaFechaIngreso=dataObject["UltimaFechaIngreso"],
+        IntentosDeAcceso=dataObject["IntentosDeAcceso"],
+        UltimaFechaCambioPassword=dataObject["UltimaFechaCambioPassword"],
+        RequiereCambiarPassword=dataObject["RequiereCambiarPassword"]
+    )
+    
+    #if isinstance(file, UploadFile) or isinstance(file, upFile):                
+    #    file_name = file.filename
+    #    file_content = await file.read()
+    #    file_length = len(file_content)
+    #    file_content_type = file.content_type     
+    #else:
+    #    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Instancia de objeto no reconocido")
+    #
+    #guardar = ImagesUtil.guardarArchivoFisico(file_name,"/usuarios",file_content)
+#
+    #if(guardar == False):
+    #    Exception("Error al guardar archivo")
+    #else:
+    #    model.Fotografia = "/usuarios/"+file_name
+    #    ret = UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
+#
+    #return ret
     ret = UsuarioTableModel.InsertarUsuarios(model,IdUsuario)
-    print(ret)
     return ret
+
 
 @routerUsuario.delete("/generales/usuarios/{IdUsuarioTable}")
 async def usuarios_delete(IdUsuarioTable):
@@ -195,8 +238,32 @@ async def usuarios_delete(IdUsuarioTable):
     return ret
 
 @routerUsuario.post("/generales/usuarios/{IdUsuario}/{IdUsuarioTable}")
-async def usuarios_post(IdUsuario,IdUsuarioTable,model:UsuarioRequest):
+async def usuarios_post(IdUsuario,IdUsuarioTable,request:Request):
+    form = await request.form()
+
+    #file = form.get("image0")
+    data = form.get("data")
+    dataObject = json.loads(data)
+    model:UsuarioRequest = UsuarioRequest(
+        IdUsuario=dataObject["IdUsuario"],
+        Nombre=dataObject["Nombre"],
+        Apellido=dataObject["Apellido"],
+        FechaNacimiento=dataObject["FechaNacimiento"],
+        IdStatusUsuario=dataObject["IdStatusUsuario"],
+        IdGenero=dataObject["IdGenero"],
+        IdSucursal=dataObject["IdSucursal"],
+        TelefonoMovil=dataObject["TelefonoMovil"],
+        CorreoElectronico=dataObject["CorreoElectronico"],
+        Password=dataObject["Password"],
+        Fotografia=dataObject["Fotografia"],
+        UltimaFechaIngreso=dataObject["UltimaFechaIngreso"],
+        IntentosDeAcceso=dataObject["IntentosDeAcceso"],
+        UltimaFechaCambioPassword=dataObject["UltimaFechaCambioPassword"],
+        RequiereCambiarPassword=dataObject["RequiereCambiarPassword"]
+    )
+    print(IdUsuarioTable)
     ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
+    print(ret)
     return ret
 
 
