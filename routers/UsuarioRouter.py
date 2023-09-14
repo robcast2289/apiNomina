@@ -14,8 +14,11 @@ router = APIRouter(
 
 @router.post('/login')
 async def login(model:LoginRequest):
-    ret = UsuarioModel.ComprobarCredenciales(model.IdUsuario,model.Password)
+
+    ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
     if ret is None:
+        ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4)
+        print(ret2)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
@@ -24,15 +27,45 @@ async def login(model:LoginRequest):
             }
         )
     
+    if ret["IdStatusUsuario"] != 1:
+        UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"])
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"Usuario {ret['Status']}"
+            }
+        )
     
-    espuesta = {
+    if ret["Password"] != model.Password:
+        # CAMBIAR POR LA CANTIDAD CONFIGURADA DE INTENTOS
+        if ret["IntentosDeAcceso"] < (3-1):
+            UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
+        else:
+            UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
+            UsuarioModel.BloquearUsuario(model.IdUsuario)
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":"Usuario y/o contraseña no son válidos"
+            }
+        )
+
+    if ret["IntentosDeAcceso"] != 0:
+        UsuarioModel.ReiniciaIntentoSesion(model.IdUsuario)
+
+    UsuarioModel.InsertaBitacora(model.IdUsuario,1)
+    UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
+    
+    respuesta = {
         "error":False,
         "token":"",
         "expires_at":"",
         "id_user":ret["IdUsuario"],
         "user":ret
     }
-    return espuesta
+    return respuesta
 
 
 @router.get('/menu/{IdUsuario}')
