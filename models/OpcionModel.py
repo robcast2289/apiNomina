@@ -54,7 +54,6 @@ from opcion
 where IdOpcion = {id}
 """
         ret = MySqldb().execute_query(query)
-        
         return ret
     
     def InsertarOpcion(data,usuario):
@@ -162,7 +161,18 @@ where IdOpcion=%s
         query = f"""
 select 
     a.IdModulo,
-    a.Nombre 
+    a.Nombre Modulo,
+    b.IdMenu, 
+    b.Nombre Menu,
+    c.IdOpcion,
+    c.Nombre Opcion,
+    r.IdRole,
+    r.Nombre Role,
+    ro.Alta,
+    ro.Baja,
+    ro.Cambio,
+    ro.Imprimir,
+    ro.Exportar
 from 
     modulo a 
     inner join menu b on a.IdModulo = b.IdModulo 
@@ -176,8 +186,9 @@ order by a.OrdenMenu asc
 """
         ret = MySqldb().execute_query(query)
 
-        try:
+        return ret
+        """ try:
             registro = ret[0]
             return True
         except:
-            return False
+            return False """

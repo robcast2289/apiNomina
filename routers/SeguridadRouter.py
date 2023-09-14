@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile
+from fastapi.responses import JSONResponse
 from starlette.datastructures import UploadFile as upFile
 import json
 from models.ModuloModel import ModuloModel
@@ -90,13 +91,47 @@ async def opciones_get():
 
 @routerOpcion.get('/generales/opciones/buscaruta/{IdUsuario}/{ruta}')
 async def opciones_ruta_get(IdUsuario,ruta):
-    print(IdUsuario)
-    print(ruta)
     if(ruta == 'home'):
         return True
     opcionBuscado = OpcionModel.findOpcionByRoute(ruta)[0]
-    acceso = OpcionModel.tieneAcceso(IdUsuario,opcionBuscado["IdOpcion"])
-    return acceso
+    registro = OpcionModel.tieneAcceso(IdUsuario,opcionBuscado["IdOpcion"])
+    try:
+        error = registro["OOPS"]
+        return False
+    except:
+        try:
+            opcion = registro[0]
+            return True
+        except:
+            return False
+        
+@routerOpcion.get('/generales/opciones/buscapermisos/{IdUsuario}/{ruta}')
+async def opciones_ruta_get(IdUsuario,ruta):
+    if(ruta == 'home'):
+        return True
+    opcionBuscado = OpcionModel.findOpcionByRoute(ruta)[0]
+    registro = OpcionModel.tieneAcceso(IdUsuario,opcionBuscado["IdOpcion"])
+    try:
+        error = registro["OOPS"]
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "error":True,
+                "mensaje":"Error al obtener los permisos"
+            }
+        )
+    except:
+        try:
+            opcion = registro[0]
+            return opcion
+        except:
+            return JSONResponse(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                content={
+                    "error":True,
+                    "mensaje":"No tiene permisos"
+                }
+        )
 
 @routerOpcion.put("/generales/opciones/{IdUsuario}")
 async def opciones_put(IdUsuario,model:OpcionRequest):
@@ -106,7 +141,17 @@ async def opciones_put(IdUsuario,model:OpcionRequest):
 @routerOpcion.delete("/generales/opciones/{IdOpcion}")
 async def opciones_delete(IdOpcion):
     ret = OpcionModel.EliminarOpcion(IdOpcion)
-    return ret
+    try:
+        error = ret["OOPS"]
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":error
+            }
+        )
+    except:
+        return ret
 
 @routerOpcion.post("/generales/opciones/{IdUsuario}/{IdOpcion}")
 async def opciones_post(IdUsuario,IdOpcion,model:OpcionRequest):
