@@ -6,9 +6,13 @@ class SucursalModel:
         query = f"""
 select 
     a.IdSucursal,
-    a.Nombre 
+    a.Nombre,
+    a.Direccion, 
+    a.IdEmpresa, 
+    b.Nombre Empresa
 from 
     sucursal a 
+    inner join empresa b on a.IdEmpresa = b.IdEmpresa
 """
         ret = MySqldb().execute_query(query)
         

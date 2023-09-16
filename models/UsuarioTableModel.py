@@ -134,6 +134,8 @@ values
             {"nombre":"Fotografia","valor":data.Fotografia,},
             {"nombre":"TelefonoMovil","valor":data.TelefonoMovil,},
             {"nombre":"IdSucursal","valor":data.IdSucursal,},
+            {"nombre":"Password","valor":data.Password,},
+
 
             {"nombre":"UsuarioModificacion","valor":usuario,},
             {"nombre":"IdUsuario","valor":idusuario,}            
@@ -152,6 +154,7 @@ RequiereCambiarPassword=%s,
 Fotografia=%s, 
 TelefonoMovil=%s, 
 IdSucursal=%s,  
+Password=%s,
 FechaModificacion=NOW(), 
 UsuarioModificacion=%s 
 where IdUsuario=%s 

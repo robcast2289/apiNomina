@@ -13,9 +13,11 @@ from models.StatusUsuarioModel import StatusUsuarioModel
 from models.GeneroModel import GeneroModel
 from models.SucursalModel import SucursalModel
 from models.UsuarioRoleModel import UsuarioRoleModel
+from models.EmpresaModel import EmpresaModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 from utils.ImagesUtil import ImagesUtil
+import utils.Cipher as Cipher
 
 router = APIRouter(
     prefix="/seguridad",
@@ -221,6 +223,42 @@ routerUsuario = APIRouter(
     tags=["Usuarios"],
 )
 
+#@routerUsuario.get("validar")
+def validarPassword(pwd:str, idusuario:str):
+    password = Cipher.vigenere_cipher(pwd,"analisisdesistemas","decrypt")
+    empresa = EmpresaModel.ObtenerEmpresaUsuario(idusuario)[0]
+    print(password)
+    print(idusuario)
+    indice=0
+    mayusculas=0
+    minusculas=0
+    numeros=0
+    especiales=0
+    longitud=0
+
+    longitud = len(password)
+    while indice < len(password):
+        letra = password[indice]
+        if letra.isupper() == True:
+            mayusculas +=1
+        elif letra.islower() == True:
+            minusculas +=1
+        elif letra.isnumeric() == True:
+            numeros += 1
+        else:
+            especiales += 1
+        
+        indice += 1
+
+    if (longitud >= empresa["PasswordLargo"] and 
+        mayusculas >= empresa["PasswordCantidadMayusculas"] and
+        minusculas >= empresa["PasswordCantidadMinusculas"] and
+        numeros >= empresa["PasswordCantidadNumeros"] and
+        especiales >= empresa["PasswordCantidadCaracteresEspeciales"]):
+        return True
+    else:
+        return False
+
 @routerUsuario.get('/generales/usuarios/{IdUsuarioTable}')
 async def usuarios_get(IdUsuarioTable):
     usuarios = UsuarioTableModel.ObtenerUnicoUsuarios(IdUsuarioTable)
@@ -306,10 +344,26 @@ async def usuarios_post(IdUsuario,IdUsuarioTable,request:Request):
         UltimaFechaCambioPassword=dataObject["UltimaFechaCambioPassword"],
         RequiereCambiarPassword=dataObject["RequiereCambiarPassword"]
     )
-    print(IdUsuarioTable)
-    ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
-    print(ret)
-    return ret
+
+    #ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
+    #print(ret)
+    #return ret
+
+    passValid = validarPassword(dataObject["Password"],IdUsuarioTable)
+
+    if passValid == True:
+        ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
+        print(ret)
+        return ret
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":"La contraseña no cumple con las características necesarias"
+            }
+        )
+
 
 
 # Usuario-Roles
@@ -363,6 +417,21 @@ async def sucursales_get():
     sucursal = SucursalModel.ObtenerSucursal()
     return sucursal
 
+
+# Empresa
+routerEmpresa = APIRouter(
+    tags=['Empresas'],
+)
+@routerEmpresa.get('/generales/empresa')
+async def empresa_get():
+    empresa = EmpresaModel.ObtenerTodosEmpresas()
+    return empresa
+
+@routerEmpresa.get('/generales/empresausuario/{idusuario}')
+async def empresausuario_get(idusuario):
+    empresa = EmpresaModel.ObtenerEmpresaUsuario(idusuario)
+    return empresa[0]
+
 router.include_router(routerModulo)
 router.include_router(routerMenu)
 router.include_router(routerOpcion)
@@ -373,3 +442,4 @@ router.include_router(routerUsuarioRole)
 router.include_router(routerStatusUsuario)
 router.include_router(routerGenero)
 router.include_router(routerSucursal)
+router.include_router(routerEmpresa)
