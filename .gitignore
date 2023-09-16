@@ -246,4 +246,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+error_log
+access_log
+gunicorn_conf.py
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,python
