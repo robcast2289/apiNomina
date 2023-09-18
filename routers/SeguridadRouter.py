@@ -397,6 +397,21 @@ async def statusUsuarios_get():
     statususuario = StatusUsuarioModel.ObtenerStatusUsuario()
     return statususuario
 
+@routerStatusUsuario.put("/generales/statususuario/{IdUsuario}")
+async def statususuario_put(IdUsuario,model:StatusUsuarioRequest):
+    StatusUsuarioModel.InsertarStatusUsuario(model,IdUsuario)
+    return
+
+@routerStatusUsuario.delete("/generales/statususuario/{IdStatusUsuario}")
+async def statususuario_delete(IdStatusUsuario):
+    ret = StatusUsuarioModel.EliminarStatusUsuario(IdStatusUsuario)
+    return ret
+
+@routerStatusUsuario.post("/generales/statususuario/{IdUsuario}/{IdStatusUsuario}")
+async def statususuario_post(IdUsuario,IdStatusUsuario,model:StatusUsuarioRequest):
+    ret = StatusUsuarioModel.ActualizarStatusUsuario(model,IdUsuario,IdStatusUsuario)
+    return ret
+
 
 # Generos
 routerGenero = APIRouter(
@@ -407,6 +422,21 @@ async def generos_get():
     genero = GeneroModel.ObtenerGenero()
     return genero
 
+@routerGenero.put("/generales/genero/{IdUsuario}")
+async def genero_put(IdUsuario,model:GeneroRequest):
+    GeneroModel.InsertarGenero(model,IdUsuario)
+    return
+
+@routerGenero.delete("/generales/genero/{IdGenero}")
+async def genero_delete(IdGenero):
+    ret = GeneroModel.EliminarGenero(IdGenero)
+    return ret
+
+@routerGenero.post("/generales/genero/{IdUsuario}/{IdGenero}")
+async def genero_post(IdUsuario,IdGenero,model:GeneroRequest):
+    ret = GeneroModel.ActualizarGenero(model,IdUsuario,IdGenero)
+    return ret
+
 
 # Sucursales
 routerSucursal = APIRouter(
@@ -416,6 +446,21 @@ routerSucursal = APIRouter(
 async def sucursales_get():
     sucursal = SucursalModel.ObtenerSucursal()
     return sucursal
+
+@routerSucursal.put("/generales/sucursal/{IdUsuario}")
+async def sucursal_put(IdUsuario,model:SucursalRequest):
+    SucursalModel.InsertarSucursal(model,IdUsuario)
+    return
+
+@routerSucursal.delete("/generales/sucursal/{IdSucursal}")
+async def sucursal_delete(IdSucursal):
+    ret = SucursalModel.EliminarSucursal(IdSucursal)
+    return ret
+
+@routerSucursal.post("/generales/sucursal/{IdUsuario}/{IdSucursal}")
+async def sucursal_post(IdUsuario,IdSucursal,model:SucursalRequest):
+    ret = SucursalModel.ActualizarSucursal(model,IdUsuario,IdSucursal)
+    return ret
 
 
 # Empresa
@@ -431,6 +476,21 @@ async def empresa_get():
 async def empresausuario_get(idusuario):
     empresa = EmpresaModel.ObtenerEmpresaUsuario(idusuario)
     return empresa[0]
+
+@routerEmpresa.put("/generales/empresa/{IdUsuario}")
+async def empresa_put(IdUsuario,model:EmpresaRequest):
+    EmpresaModel.InsertarEmpresa(model,IdUsuario)
+    return
+
+@routerEmpresa.delete("/generales/empresa/{IdEmpresa}")
+async def empresa_delete(IdEmpresa):
+    ret = EmpresaModel.EliminarEmpresa(IdEmpresa)
+    return ret
+
+@routerEmpresa.post("/generales/empresa/{IdUsuario}/{IdEmpresa}")
+async def empresa_post(IdUsuario,IdEmpresa,model:EmpresaRequest):
+    ret = EmpresaModel.ActualizarEmpresa(model,IdUsuario,IdEmpresa)
+    return ret
 
 router.include_router(routerModulo)
 router.include_router(routerMenu)

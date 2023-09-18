@@ -112,11 +112,7 @@ values
     
 
     def ActualizarEmpresa(data,usuario,idempresa):
-        for campo,valor in data:
-            print(campo)
-            print(valor)
-
-        print(data.Nombre)
+        print(idempresa)
         params = [
             {"nombre":"Nombre","valor":data.Nombre,},
             {"nombre":"Direccion","valor":data.Direccion,},

@@ -17,3 +17,80 @@ from
         ret = MySqldb().execute_query(query)
         
         return ret
+    
+    def EliminarSucursal(id:int):
+        query = f"""
+delete
+from sucursal
+where IdSucursal = {id}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def InsertarSucursal(data,usuario):
+        params = [
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"Direccion",
+                "valor":data.Direccion,
+            },
+            {
+                "nombre":"IdEmpresa",
+                "valor":data.Direccion,
+            },
+            {
+                "nombre":"UsuarioCreacion",
+                "valor":usuario,
+            }
+        ]
+        query = f"""
+insert into sucursal
+(Nombre,Direccion,IdEmpresa,FechaCreacion,UsuarioCreacion)
+values
+(%s,%s,%s,NOW(),%s)
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
+    
+
+    def ActualizarSucursal(data,usuario,idsucursal):
+        params = [
+            {
+                "nombre":"Nombre",
+                "valor":data.Nombre,
+            },
+            {
+                "nombre":"Direccion",
+                "valor":data.Direccion,
+            },
+            {
+                "nombre":"IdEmpresa",
+                "valor":data.Direccion,
+            },
+            {
+                "nombre":"UsuarioModificacion",
+                "valor":usuario,
+            },
+            {
+                "nombre":"IdSucursal",
+                "valor":idsucursal,
+            }            
+        ]
+        query = f"""
+update sucursal 
+set 
+Nombre=%s, 
+Direccion=%s,
+IdEmpresa=%s,
+FechaModificacion=NOW(), 
+UsuarioModificacion=%s
+where IdSucursal=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret

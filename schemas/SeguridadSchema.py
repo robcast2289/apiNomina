@@ -68,3 +68,31 @@ class UsuarioRequest(BaseModel):
 class UsuarioRoleRequest(BaseModel):
     IdUsuario:str
     IdRole:int
+
+
+class EmpresaRequest(BaseModel):
+    Nombre:str
+    Direccion:str
+    Nit:str
+    PasswordCantidadMayusculas:int
+    PasswordCantidadMinusculas:int
+    PasswordCantidadCaracteresEspeciales:int
+    PasswordCantidadCaducidadDias:int
+    PasswordLargo:int
+    PasswordIntentosAntesDeBloquear:int
+    PasswordCantidadNumeros:int
+    PasswordCantidadPreguntasValidar:int
+
+
+class SucursalRequest(BaseModel):
+    Nombre:str
+    Direccion:str
+    IdEmpresa:int
+
+
+class GeneroRequest(BaseModel):
+    Nombre:str
+
+
+class StatusUsuarioRequest(BaseModel):
+    Nombre:str
