@@ -13,16 +13,16 @@ router = APIRouter(
 )
 
 @router.post('/login')
-async def login(model:LoginRequest, request:Request, websocket:WebSocket):
+async def login(model:LoginRequest, request:Request):
     try:
         userAgent = ""
         ip = ""
-        #userAgent = request.headers.get("User-Agent")
-        userAgent = websocket.headers.get("User-Agent")
+        userAgent = request.headers.get("User-Agent")
+        #userAgent = websocket.headers.get("User-Agent")
         #ip = f"{request.client.host}:{request.client.port}"    
-        #ip = request.headers.get("Origin")
+        ip = request.headers.get("Origin")
         #ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
-        ip = websocket.client.host
+        #ip = websocket.client.host
         
         print(ip)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
