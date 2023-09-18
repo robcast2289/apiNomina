@@ -14,60 +14,69 @@ router = APIRouter(
 
 @router.post('/login')
 async def login(model:LoginRequest, request:Request):
-    userAgent = request.headers.get("User-Agent")
-    ip = f"{request.client.host}:{request.client.port}"    
-    print(ip)
-    ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
-    if ret is None:
-        ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"","","","")
-        print(ret2)
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={
-                "error":True,
-                "mensaje":"Usuario y/o contraseña no son válidos"
-            }
-        )
-    
-    if ret["IdStatusUsuario"] != 1:
-        UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"],userAgent,ip,"","","","")
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={
-                "error":True,
-                "mensaje":f"Usuario {ret['Status']}"
-            }
-        )
-    
-    if ret["Password"] != model.Password:
-        # CAMBIAR POR LA CANTIDAD CONFIGURADA DE INTENTOS
-        if ret["IntentosDeAcceso"] < (3-1):
-            UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
-        else:
-            UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
-            UsuarioModel.BloquearUsuario(model.IdUsuario)
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={
-                "error":True,
-                "mensaje":"Usuario y/o contraseña no son válidos"
-            }
-        )
+    try:
+        userAgent = request.headers.get("User-Agent")
+        ip = f"{request.client.host}:{request.client.port}"    
+        print(ip)
+        ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
+        if ret is None:
+            ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"","","","")
+            print(ret2)
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":"Usuario y/o contraseña no son válidos"
+                }
+            )
+        
+        if ret["IdStatusUsuario"] != 1:
+            UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"],userAgent,ip,"","","","")
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":f"Usuario {ret['Status']}"
+                }
+            )
+        
+        if ret["Password"] != model.Password:
+            # CAMBIAR POR LA CANTIDAD CONFIGURADA DE INTENTOS
+            if ret["IntentosDeAcceso"] < (3-1):
+                UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
+            else:
+                UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
+                UsuarioModel.BloquearUsuario(model.IdUsuario)
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":"Usuario y/o contraseña no son válidos"
+                }
+            )
 
-    if ret["IntentosDeAcceso"] != 0:
-        UsuarioModel.ReiniciaIntentoSesion(model.IdUsuario)
+        if ret["IntentosDeAcceso"] != 0:
+            UsuarioModel.ReiniciaIntentoSesion(model.IdUsuario)
 
-    UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,"","","","")
-    UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
-    
-    respuesta = {
-        "error":False,
-        "token":"",
-        "expires_at":"",
-        "id_user":ret["IdUsuario"],
-        "user":ret
-    }
-    return respuesta
+        UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,"","","","")
+        UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
+        
+        respuesta = {
+            "error":False,
+            "token":"",
+            "expires_at":"",
+            "id_user":ret["IdUsuario"],
+            "user":ret
+        }
+        return respuesta
+    except Exception as e:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":e
+            }
+        )
 
 
 @router.get('/menu/{IdUsuario}')
