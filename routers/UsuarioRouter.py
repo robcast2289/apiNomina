@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, WebSocket
 from fastapi.responses import JSONResponse
 from schemas.UsuarioSchema import LoginRequest
 from models.UsuarioModel import UsuarioModel
@@ -13,14 +13,15 @@ router = APIRouter(
 )
 
 @router.post('/login')
-async def login(model:LoginRequest, request:Request):
+async def login(model:LoginRequest, request:Request, websocket:WebSocket):
     try:
         userAgent = ""
         ip = ""
         userAgent = request.headers.get("User-Agent")
         #ip = f"{request.client.host}:{request.client.port}"    
         #ip = request.headers.get("Origin")
-        ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
+        #ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
+        ip = websocket.client.host
         
         print(ip)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
