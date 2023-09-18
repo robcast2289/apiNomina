@@ -19,7 +19,8 @@ async def login(model:LoginRequest, request:Request):
         ip = ""
         userAgent = request.headers.get("User-Agent")
         #ip = f"{request.client.host}:{request.client.port}"    
-        ip = request.headers.get("Origin")
+        #ip = request.headers.get("Origin")
+        ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
         
         print(ip)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
