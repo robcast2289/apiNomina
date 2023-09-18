@@ -13,12 +13,14 @@ router = APIRouter(
 )
 
 @router.post('/login')
-async def login(model:LoginRequest):
+async def login(model:LoginRequest, request:Request):
     try:
-        #userAgent = request.headers.get("User-Agent")
-        #ip = f"{request.client.host}:{request.client.port}"    
         userAgent = ""
         ip = ""
+        userAgent = request.headers.get("User-Agent")
+        #ip = f"{request.client.host}:{request.client.port}"    
+        ip = request.headers.get("Origin")
+        
         print(ip)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
         if ret is None:
