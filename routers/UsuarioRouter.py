@@ -17,7 +17,8 @@ async def login(model:LoginRequest, request:Request, websocket:WebSocket):
     try:
         userAgent = ""
         ip = ""
-        userAgent = request.headers.get("User-Agent")
+        #userAgent = request.headers.get("User-Agent")
+        userAgent = websocket.headers.get("User-Agent")
         #ip = f"{request.client.host}:{request.client.port}"    
         #ip = request.headers.get("Origin")
         #ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
