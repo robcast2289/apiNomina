@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import JSONResponse
 from schemas.UsuarioSchema import LoginRequest
 from models.UsuarioModel import UsuarioModel
@@ -13,11 +13,13 @@ router = APIRouter(
 )
 
 @router.post('/login')
-async def login(model:LoginRequest):
-
+async def login(model:LoginRequest, request:Request):
+    userAgent = request.headers.get("User-Agent")
+    ip = f"{request.client.host}:{request.client.port}"    
+    print(ip)
     ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
     if ret is None:
-        ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4)
+        ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,None,None,None,None)
         print(ret2)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -28,7 +30,7 @@ async def login(model:LoginRequest):
         )
     
     if ret["IdStatusUsuario"] != 1:
-        UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"])
+        UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"],userAgent,ip,None,None,None,None)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
@@ -55,7 +57,7 @@ async def login(model:LoginRequest):
     if ret["IntentosDeAcceso"] != 0:
         UsuarioModel.ReiniciaIntentoSesion(model.IdUsuario)
 
-    UsuarioModel.InsertaBitacora(model.IdUsuario,1)
+    UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,None,None,None,None)
     UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
     
     respuesta = {

@@ -100,20 +100,32 @@ where IdUsuario=%s
         return ret
 
     
-    def InsertaBitacora(usuario,tipo_acceso):
+    def InsertaBitacora(usuario,tipo_acceso,userAgent,host,accion,os,device,browser):
         params = [
             {"nombre":"IdUsuario","valor":usuario,},            
-            {"nombre":"IdTipoAcceso","valor":tipo_acceso,}
+            {"nombre":"IdTipoAcceso","valor":tipo_acceso,},
+            {"nombre":"HttpUserAgent","valor":userAgent,},
+            {"nombre":"DireccionIp","valor":host,},
+            {"nombre":"Accion","valor":accion,},
+            {"nombre":"SistemaOperativo","valor":os,},
+            {"nombre":"Dispositivo","valor":device,},
+            {"nombre":"Browser","valor":browser,}
         ]
         query = f"""
 insert into bitacora_acceso 
 (
 IdUsuario,
 IdTipoAcceso,
-FechaAcceso
+FechaAcceso,
+HttpUserAgent,
+DireccionIp,
+Accion,
+SistemaOperativo,
+Dispositivo,
+Browser
 ) 
 values 
-(%s,%s,NOW())
+(%s,%s,NOW(),%s,%s,%s,%s,%s,%s)
 """
         ret = MySqldb().execute_insert(query,params=params)        
         return ret
