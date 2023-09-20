@@ -40,7 +40,7 @@ where IdSucursal = {id}
             },
             {
                 "nombre":"IdEmpresa",
-                "valor":data.Direccion,
+                "valor":data.IdEmpresa,
             },
             {
                 "nombre":"UsuarioCreacion",
@@ -70,7 +70,7 @@ values
             },
             {
                 "nombre":"IdEmpresa",
-                "valor":data.Direccion,
+                "valor":data.IdEmpresa,
             },
             {
                 "nombre":"UsuarioModificacion",
