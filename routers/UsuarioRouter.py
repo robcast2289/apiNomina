@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, WebSocket
 from fastapi.responses import JSONResponse
+import json
 from schemas.UsuarioSchema import LoginRequest
 from models.UsuarioModel import UsuarioModel
 from models.ModuloModel import ModuloModel
@@ -13,18 +14,25 @@ router = APIRouter(
 )
 
 @router.post('/login')
-async def login(model:LoginRequest, request:Request):
+async def login(request:Request):
     try:
-        userAgent = ""
-        ip = ""
         userAgent = request.headers.get("User-Agent")
         #userAgent = websocket.headers.get("User-Agent")
         #ip = f"{request.client.host}:{request.client.port}"    
         #ip = request.headers.get("Origin")
         ip = request.headers.get("X-Forwarded-For", "").split(",")[0]
         #ip = websocket.client.host
-        
-        print(ip)
+
+        form = await request.form()
+
+        data = form.get("data")
+        dataObject = json.loads(data)
+
+        model:LoginRequest = LoginRequest(
+            IdUsuario=dataObject["IdUsuario"],
+            Password=dataObject["Password"]
+        )      
+
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
         if ret is None:
             ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"","","","")
