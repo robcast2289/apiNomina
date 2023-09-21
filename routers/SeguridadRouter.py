@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, Header
 from fastapi.responses import JSONResponse
 from starlette.datastructures import UploadFile as upFile
 import json
@@ -492,6 +492,15 @@ async def empresa_post(IdUsuario,IdEmpresa,model:EmpresaRequest):
     ret = EmpresaModel.ActualizarEmpresa(model,IdUsuario,IdEmpresa)
     return ret
 
+
+
+routerTesting = APIRouter(
+    tags=['Testing'],
+)
+@routerTesting.get('/')
+def index(real_ip: str = Header(None, alias='X-Real-IP')):
+    return real_ip
+
 router.include_router(routerModulo)
 router.include_router(routerMenu)
 router.include_router(routerOpcion)
@@ -503,3 +512,4 @@ router.include_router(routerStatusUsuario)
 router.include_router(routerGenero)
 router.include_router(routerSucursal)
 router.include_router(routerEmpresa)
+router.include_router(routerTesting)
