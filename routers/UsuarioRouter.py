@@ -49,7 +49,7 @@ async def login(request:Request):
             )
         
         if ret["IdStatusUsuario"] != 1:
-            UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"],userAgent,ip,"","","","")
+            UsuarioModel.InsertaBitacora(model.IdUsuario,ret["IdStatusUsuario"],userAgent,ip,"",logObject["os"],logObject["device"],logObject["browser"])
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={
@@ -76,7 +76,7 @@ async def login(request:Request):
         if ret["IntentosDeAcceso"] != 0:
             UsuarioModel.ReiniciaIntentoSesion(model.IdUsuario)
 
-        UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,"","","","")
+        UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,"",logObject["os"],logObject["device"],logObject["browser"])
         UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
         
         respuesta = {
