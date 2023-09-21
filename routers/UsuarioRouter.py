@@ -27,7 +27,7 @@ async def login(request:Request):
 
         data = form.get("data")
         log = form.get('log')
-        #print(data)
+        print(log)
         dataObject = json.loads(data)
         logObject = json.loads(log)
 
@@ -38,7 +38,7 @@ async def login(request:Request):
         print(model)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
         if ret is None:
-            ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"",dataObject["os"],dataObject["device"],dataObject["browser"])
+            ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"",logObject["os"],logObject["device"],logObject["browser"])
             print(ret2)
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
