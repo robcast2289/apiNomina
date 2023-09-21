@@ -26,16 +26,19 @@ async def login(request:Request):
         form = await request.form()
 
         data = form.get("data")
+        log = form.get('log')
+        #print(data)
         dataObject = json.loads(data)
+        logObject = json.loads(log)
 
         model:LoginRequest = LoginRequest(
             IdUsuario=dataObject["IdUsuario"],
             Password=dataObject["Password"]
         )      
-
+        print(model)
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
         if ret is None:
-            ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"","","","")
+            ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"",dataObject["os"],dataObject["device"],dataObject["browser"])
             print(ret2)
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
