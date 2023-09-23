@@ -6,6 +6,7 @@ from models.UsuarioModel import UsuarioModel
 from models.ModuloModel import ModuloModel
 from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
+from models.EmpresaModel import EmpresaModel
 
 
 router = APIRouter(
@@ -58,9 +59,10 @@ async def login(request:Request):
                 }
             )
         
+        empresa = EmpresaModel.ObtenerEmpresaUsuario(model.IdUsuario)[0]
         if ret["Password"] != model.Password:
             # CAMBIAR POR LA CANTIDAD CONFIGURADA DE INTENTOS
-            if ret["IntentosDeAcceso"] < (3-1):
+            if ret["IntentosDeAcceso"] < (int(empresa["PasswordIntentosAntesDeBloquear"])-1):
                 UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
             else:
                 UsuarioModel.ActualizaIntentoSesion(model.IdUsuario)
