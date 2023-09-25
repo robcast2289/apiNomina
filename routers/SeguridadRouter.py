@@ -14,6 +14,7 @@ from models.GeneroModel import GeneroModel
 from models.SucursalModel import SucursalModel
 from models.UsuarioRoleModel import UsuarioRoleModel
 from models.EmpresaModel import EmpresaModel
+from models.UsuarioPreguntaModel import UsuarioPreguntaModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 from utils.ImagesUtil import ImagesUtil
@@ -493,6 +494,14 @@ async def empresa_post(IdUsuario,IdEmpresa,model:EmpresaRequest):
     return ret
 
 
+routerUsuarioPregunta = APIRouter(
+    tags=['Usuario Preguntas'],
+)
+@routerUsuarioPregunta.get("/generales/usuariopregunta/{IdUsuario}")
+async def routerUsuarioPregunta_get(IdUsuario):
+    usuariopreguntas = UsuarioPreguntaModel.ObtenerTodosUsuarioPregunta(IdUsuario)
+    return usuariopreguntas
+
 
 routerTesting = APIRouter(
     tags=['Testing'],
@@ -512,4 +521,7 @@ router.include_router(routerStatusUsuario)
 router.include_router(routerGenero)
 router.include_router(routerSucursal)
 router.include_router(routerEmpresa)
+router.include_router(routerUsuarioPregunta)
+
+
 router.include_router(routerTesting)
