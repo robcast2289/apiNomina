@@ -7,6 +7,7 @@ from models.ModuloModel import ModuloModel
 from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
 from models.EmpresaModel import EmpresaModel
+from models.UsuarioPreguntaModel import UsuarioPreguntaModel
 
 
 router = APIRouter(
@@ -137,5 +138,74 @@ async def menu(IdUsuario):
         "opciones":menuAll
     }
 
+
+@router.post("/recover")
+async def recover(request:Request):
+    form = await request.form()
+
+    data = form.get("data")
+    print(data)
+    dataObject = json.loads(data)
+
+    model:LoginRequest = LoginRequest(
+        IdUsuario=dataObject["IdUsuario"],
+        Password=""
+    )
+
+    ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
+    if ret is None:        
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":"El usuario proporcionado no existe en nuestra base de datos"
+            }
+        )
+    
+    if ret["IdStatusUsuario"] != 1:        
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"Usuario {ret['Status']}"
+            }
+        )
+    
+    empresa = EmpresaModel.ObtenerEmpresaUsuario(model.IdUsuario)[0]
+    preguntas = UsuarioPreguntaModel.ObtenerTodosUsuarioPregunta(model.IdUsuario,int(empresa['PasswordCantidadPreguntasValidar']))
+    if preguntas is None or len(preguntas) == 0:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"El usuario proporcionado no tiene metodos de recuperación. Consulte con el administrador del sistema"
+            }
+        )
+    
+    return preguntas
+
+
+@router.post('/valida_pregunta')
+async def valida_pregunta(request: Request):
+    form = await request.form()
+
+    data = form.get("data")
+    dataObject = json.loads(data)
+    
+    model:LoginRequest = LoginRequest(
+        IdUsuario=dataObject["IdUsuario"],
+        Password=""
+    )
+
+    quest = form.get("question")
+    questObject = json.loads(quest)
+
+    for numTest in questObject:
+        idpregunta = str(numTest).replace("pregunta","")
+        respuesta = UsuarioPreguntaModel.obtenerRespuesta(model.IdUsuario,int(idpregunta))
+        respuestaBase = respuesta[0]["Respuesta"].upper()
+        respuestaUser = str(questObject[numTest]).upper()
+        print(respuestaBase)
+        print(respuestaUser)
 
 
