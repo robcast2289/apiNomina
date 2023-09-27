@@ -18,6 +18,11 @@
 --
 -- Table structure for table `bitacora_acceso`
 --
+drop schema if exists Nomina;
+
+create schema if not exists Nomina;
+
+use Nomina;
 
 DROP TABLE IF EXISTS `bitacora_acceso`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
