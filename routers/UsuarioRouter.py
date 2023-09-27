@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request, WebSocket
 from fastapi.responses import JSONResponse
+from datetime import datetime, timedelta
+import time
 import json
 from schemas.UsuarioSchema import LoginRequest
 from models.UsuarioModel import UsuarioModel
@@ -8,6 +10,7 @@ from models.MenuModel import MenuModel
 from models.OpcionModel import OpcionModel
 from models.EmpresaModel import EmpresaModel
 from models.UsuarioPreguntaModel import UsuarioPreguntaModel
+from utils.UsuarioUtil import UsuarioUtil
 
 
 router = APIRouter(
@@ -82,10 +85,11 @@ async def login(request:Request):
         UsuarioModel.InsertaBitacora(model.IdUsuario,1,userAgent,ip,"",logObject["os"],logObject["device"],logObject["browser"])
         UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
         
+        expiresAt = datetime.now() + timedelta(days=1)
         respuesta = {
             "error":False,
             "token":"",
-            "expires_at":"",
+            "expires_at":int(time.mktime(expiresAt.timetuple())) * 1000,
             "id_user":ret["IdUsuario"],
             "user":ret
         }
@@ -200,12 +204,77 @@ async def valida_pregunta(request: Request):
     quest = form.get("question")
     questObject = json.loads(quest)
 
+    preguntasValidas:bool = True
+
     for numTest in questObject:
         idpregunta = str(numTest).replace("pregunta","")
         respuesta = UsuarioPreguntaModel.obtenerRespuesta(model.IdUsuario,int(idpregunta))
         respuestaBase = respuesta[0]["Respuesta"].upper()
         respuestaUser = str(questObject[numTest]).upper()
-        print(respuestaBase)
-        print(respuestaUser)
+        # Quitar acentos
+
+        if respuestaBase != respuestaUser:
+            preguntasValidas = False
+
+    if preguntasValidas == False:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"Las respuestas no coinciden"
+            }
+        )
+    
+    return preguntasValidas
+
+
+@router.post("/cambiar_contrasena")
+async def cambiar_contrasena(request:Request):
+    form = await request.form()
+
+    data = form.get("data")
+    dataObject = json.loads(data)
+    
+    model:LoginRequest = LoginRequest(
+        IdUsuario=dataObject["IdUsuario"],
+        Password=""
+    )
+
+    passwords = form.get("pass")
+    passwordsObject = json.loads(passwords)
+
+    if passwordsObject["Password"] != passwordsObject["ConfirmPassword"]:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"La contraseña no coincide"
+            }
+        )
+    
+    isValid = UsuarioUtil.validarPassword(passwordsObject["Password"],model.IdUsuario)
+    if isValid == False:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"La contraseña no cumple con las características necesarias"
+            }
+        )
+    
+    UsuarioModel.CambiarContrasena(model.IdUsuario,passwordsObject["Password"]) 
+    
+    ret = UsuarioModel.BuscarUsuario(model.IdUsuario)
+    UsuarioModel.ActualizaUltimaSesion(model.IdUsuario)
+        
+    respuesta = {
+        "error":False,
+        "token":"",
+        "expires_at":"",
+        "id_user":ret["IdUsuario"],
+        "user":ret
+    }
+    return respuesta
+        
 
 

@@ -98,6 +98,24 @@ where IdUsuario=%s
 """
         ret = MySqldb().execute_insert(query,params=params)        
         return ret
+    
+
+    def CambiarContrasena(usr,password):
+        params = [
+            {"nombre":"Password","valor":password,},
+            {"nombre":"UsuarioModificacion","valor":usr,},
+            {"nombre":"IdUsuario","valor":usr,}            
+        ]
+        query = f"""
+update usuario 
+set 
+Password=%s, 
+FechaModificacion=NOW(), 
+UsuarioModificacion=%s 
+where IdUsuario=%s 
+"""
+        ret = MySqldb().execute_insert(query,params=params)        
+        return ret
 
     
     def InsertaBitacora(usuario,tipo_acceso,userAgent,host,accion,os,device,browser):
