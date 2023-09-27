@@ -1,7 +1,7 @@
 from repositories.mysql.mysql_db import MySqldb
 
 class UsuarioPreguntaModel:
-    def ObtenerTodosUsuarioPregunta(idusuario,numpregunta):
+    def ObtenerTodosUsuarioPregunta(idusuario,numpregunta=50):
         query = f"""
     select 
         a.IdPregunta,
