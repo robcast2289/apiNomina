@@ -2,9 +2,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import routers
 
-app = FastAPI()
+app = FastAPI(
+    version="1.0.1",
+    title="Servicio Nomina",
+    description="Aplicación para proyecto de Análisis de Sistemas II, UMG 2023",
+)
 app.include_router(routers.UsuarioRouter.router)
 app.include_router(routers.SeguridadRouter.router)
+app.include_router(routers.BancoRouter.router)
+app.include_router(routers.RRHHRouter.router)
+app.include_router(routers.NominaRouter.router)
 
 origins = [
     "http://localhost",

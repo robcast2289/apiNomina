@@ -1,2 +1,5 @@
 from routers import (UsuarioRouter,
-                     SeguridadRouter)
+                     SeguridadRouter,
+                     BancoRouter,
+                     RRHHRouter,
+                     NominaRouter)

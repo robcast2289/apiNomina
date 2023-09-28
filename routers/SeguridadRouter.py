@@ -15,6 +15,7 @@ from models.SucursalModel import SucursalModel
 from models.UsuarioRoleModel import UsuarioRoleModel
 from models.EmpresaModel import EmpresaModel
 from models.UsuarioPreguntaModel import UsuarioPreguntaModel
+from models.BitacoraAccesoModel import BitacoraAccesoModel
 #from schemas.SeguridadSchema import ModuloRequest,MenuRequest,OpcionRequest,RoleRequest,RoleOpcionRequest
 from schemas.SeguridadSchema import *
 from utils.ImagesUtil import ImagesUtil
@@ -494,6 +495,7 @@ async def empresa_post(IdUsuario,IdEmpresa,model:EmpresaRequest):
     return ret
 
 
+# Usuario Pregunta
 routerUsuarioPregunta = APIRouter(
     tags=['Usuario Preguntas'],
 )
@@ -503,6 +505,17 @@ async def routerUsuarioPregunta_get(IdUsuario):
     return usuariopreguntas
 
 
+# Bitacora Acceso
+routerBitacoraAcceso = APIRouter(
+    tags=['Bitacora Acceso'],
+)
+@routerBitacoraAcceso.get("/generales/bitacoraacceso")
+async def bitacoraacceso_get():
+    bitacoraacceso = BitacoraAccesoModel.ObtenerTodosBitacora()
+    return bitacoraacceso
+
+
+# TEST
 routerTesting = APIRouter(
     tags=['Testing'],
 )
@@ -522,6 +535,7 @@ router.include_router(routerGenero)
 router.include_router(routerSucursal)
 router.include_router(routerEmpresa)
 router.include_router(routerUsuarioPregunta)
+router.include_router(routerBitacoraAcceso)
 
 
 router.include_router(routerTesting)

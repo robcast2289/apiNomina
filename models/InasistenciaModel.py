@@ -1,0 +1,94 @@
+from repositories.mysql.mysql_db import MySqldb
+
+class InasistenciaModel:
+    def ObtenerTodosInasistencia():
+        query = f"""
+select 
+    a.IdInasistencia,
+    a.IdEmpleado,
+    concat(c.Nombre,' ',c.Apellido) Empleado,
+    a.FechaInicial,
+    a.FechaFinal,
+    a.MotivoInasistencia
+from 
+    inasistencia a,
+    empleado b,
+    persona c
+where
+    a.IdEmpleado = b.IdEmpleado
+    and b.IdPersona = c.IdPersona
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def EliminarInasistencia(id:int):
+        query = f"""
+delete
+from inasistencia
+where IdInasistencia = {id}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
+    def InsertarInasistencia(data,usuario):
+        params = [
+            {"nombre":"IdEmpleado","valor":data.IdEmpleado,},            
+            {"nombre":"FechaInicial","valor":data.FechaInicial,},            
+            {"nombre":"FechaFinal","valor":data.FechaFinal,},            
+            {"nombre":"MotivoInasistencia","valor":data.MotivoInasistencia,},            
+
+            {
+                "nombre":"UsuarioCreacion",
+                "valor":usuario,
+            }
+        ]
+        query = f"""
+insert into inasistencia
+(
+    IdEmpleado,
+    FechaInicial,
+    FechaFinal,
+    MotivoInasistencia,
+    FechaCreacion,
+    UsuarioCreacion
+)
+values
+(%s,%s,%s,%s,NOW(),%s)
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
+    
+
+    def ActualizarInasistencia(data,usuario,IdInasistencia):
+        params = [
+            {"nombre":"IdEmpleado","valor":data.IdEmpleado,},            
+            {"nombre":"FechaInicial","valor":data.FechaInicial,},            
+            {"nombre":"FechaFinal","valor":data.FechaFinal,},            
+            {"nombre":"MotivoInasistencia","valor":data.MotivoInasistencia,},           
+            
+            {
+                "nombre":"UsuarioModificacion",
+                "valor":usuario,
+            },
+            {
+                "nombre":"IdInasistencia",
+                "valor":IdInasistencia,
+            }            
+        ]
+        query = f"""
+update inasistencia 
+set 
+IdEmpleado=%s,
+FechaInicial=%s,
+FechaFinal=%s,
+MotivoInasistencia=%s,
+FechaModificacion=NOW(), 
+UsuarioModificacion=%s
+where IdInasistencia=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret
