@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 import json
 from models.EstadoCivilModel import EstadoCivilModel
@@ -39,7 +39,17 @@ async def estadocivil_delete(IdEstadoCivil):
 async def estadocivil_post(IdUsuario,IdEstadoCivil,model:EstadoCivilRequest):
     ret = EstadoCivilModel.ActualizarEstadoCivil(model,IdUsuario,IdEstadoCivil)
     print(ret)
-    return ret
+    try:
+        error = ret["OOPS"]
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error": True,
+                "mensaje":error
+            }
+        )
+    except:
+        return ret
 
 
 

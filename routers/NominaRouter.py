@@ -90,11 +90,11 @@ async def periodoplanilla_delete(IdPeriodoPlanilla):
     ret = PeriodoPlanillaModel.EliminarPeriodoPlanilla(IdPeriodoPlanilla)
     return ret
 
-@routerPeriodoPlanilla.post("/periodoplanilla/{IdUsuario}/{IdPeriodoPlanilla}")
-async def periodoplanilla_post(IdUsuario,IdPeriodoPlanilla,model:PeriodoPlanillaRequest):
-    ret = PeriodoPlanillaModel.ActualizarPeriodoPlanilla(model,IdUsuario,IdPeriodoPlanilla)
-    print(ret)
-    return ret
+#@routerPeriodoPlanilla.post("/periodoplanilla/{IdUsuario}/{IdPeriodoPlanilla}")
+#async def periodoplanilla_post(IdUsuario,IdPeriodoPlanilla,model:PeriodoPlanillaRequest):
+#    ret = PeriodoPlanillaModel.ActualizarPeriodoPlanilla(model,IdUsuario,IdPeriodoPlanilla)
+#    print(ret)
+#    return ret
 
 
 router.include_router(routerStatusEmpleado)

@@ -68,6 +68,7 @@ FechaModificacion=NOW(),
 UsuarioModificacion=%s
 where IdEstadoCivil=%s
 """
+        print(query)
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
