@@ -16,5 +16,4 @@ class InasistenciaRequest(BaseModel):
 class PeriodoPlanillaRequest(BaseModel):
     Anio:int
     Mes:int
-    FechaInicio:date
-    FechaFin:date
+    Cantidad:int

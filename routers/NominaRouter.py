@@ -82,12 +82,17 @@ async def periodoplanilla_get():
 
 @routerPeriodoPlanilla.put("/periodoplanilla/{IdUsuario}")
 async def periodoplanilla_put(IdUsuario,model:PeriodoPlanillaRequest):
-    PeriodoPlanillaModel.InsertarPeriodoPlanilla(model,IdUsuario)
+    print(model)
+    count = 1
+    for _ in range(model.Cantidad): 
+        model.Mes = count       
+        PeriodoPlanillaModel.InsertarPeriodoPlanilla(model,IdUsuario)
+        count = count + 1
     return
 
-@routerPeriodoPlanilla.delete("/periodoplanilla/{IdPeriodoPlanilla}")
-async def periodoplanilla_delete(IdPeriodoPlanilla):
-    ret = PeriodoPlanillaModel.EliminarPeriodoPlanilla(IdPeriodoPlanilla)
+@routerPeriodoPlanilla.delete("/periodoplanilla/{Anio}/{Mes}")
+async def periodoplanilla_delete(Anio:int,Mes:int):
+    ret = PeriodoPlanillaModel.EliminarPeriodoPlanilla(Anio,Mes)
     return ret
 
 #@routerPeriodoPlanilla.post("/periodoplanilla/{IdUsuario}/{IdPeriodoPlanilla}")
