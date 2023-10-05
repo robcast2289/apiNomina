@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 import json
 from models.StatusEmpleadoModel import StatusEmpleadoModel
@@ -55,6 +55,25 @@ async def inasistencia_get():
 
 @routerInasistencia.put("/inasistencia/{IdUsuario}")
 async def inasistencia_put(IdUsuario,model:InasistenciaRequest):
+    if(model.FechaInicial.month != model.FechaFinal.month):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"La fecha inicial y final deben ser del mismo mes"
+            }
+        )
+    
+    traslapes = InasistenciaModel.BuscaTraslape(model)
+    if(len(traslapes) > 0):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":f"El registro se traslapa con la inasistencia { traslapes[0]['IdInasistencia'] }"
+            }
+        )
+    
     InasistenciaModel.InsertarInasistencia(model,IdUsuario)
     return
 

@@ -95,14 +95,18 @@ where IdInasistencia=%s
     
 
     def BuscaTraslape(data):
+        params = [
+            #{"nombre":"IdEmpleado","valor":data.IdEmpleado,},            
+            {"nombre":"FechaFinal","valor":data.FechaFinal,},                  
+            {"nombre":"FechaInicial","valor":data.FechaInicial,},            
+        ]
         query = f"""
 select * from inasistencia a
 where
     a.IdEmpleado={data.IdEmpleado}
-    and (
-    (a.FechaInicial <= {data.FechaInicial} and a.FechaFinal >= {data.fechaFinal}
-    )
+    and a.FechaInicial <= %s and a.FechaFinal >= %s
 """
-        ret = MySqldb().execute_query(query)
+        print(query)
+        ret = MySqldb().execute_insert(query,params=params)
         
         return ret
