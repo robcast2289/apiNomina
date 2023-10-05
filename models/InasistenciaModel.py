@@ -92,3 +92,17 @@ where IdInasistencia=%s
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
+    
+
+    def BuscaTraslape(data):
+        query = f"""
+select * from inasistencia a
+where
+    a.IdEmpleado={data.IdEmpleado}
+    and (
+    (a.FechaInicial <= {data.FechaInicial} and a.FechaFinal >= {data.fechaFinal}
+    )
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
