@@ -4,6 +4,7 @@ import json
 from models.StatusEmpleadoModel import StatusEmpleadoModel
 from models.InasistenciaModel import InasistenciaModel
 from models.PeriodoPlanillaModel import PeriodoPlanillaModel
+from models.EmpleadoModel import EmpleadoModel
 from schemas.NominaSchemas import *
 
 
@@ -102,6 +103,24 @@ async def periodoplanilla_delete(Anio:int,Mes:int):
 #    return ret
 
 
+
+# Empleado
+routerEmpleado = APIRouter(
+    tags=["Empleado"],
+)
+
+@routerEmpleado.get('/empleado')
+async def empleado_get():
+    empleado = EmpleadoModel.ObtenerTodosEmpleado()
+    return empleado
+
+@routerEmpleado.get('/empleadocontratado')
+async def empleadocontratado_get():
+    empleado = EmpleadoModel.ObtenerEmpleadoContratado()
+    return empleado
+
+
 router.include_router(routerStatusEmpleado)
 router.include_router(routerInasistencia)
 router.include_router(routerPeriodoPlanilla)
+router.include_router(routerEmpleado)
