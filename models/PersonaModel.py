@@ -5,6 +5,12 @@ class PersonaModel:
         params = [
             {"nombre":"Nombre","valor":data.Nombre,},            
             {"nombre":"Apellido","valor":data.Apellido,},          
+            {"nombre":"FechaNacimiento","valor":data.FechaNacimiento,},          
+            {"nombre":"IdGenero","valor":data.IdGenero,},          
+            {"nombre":"Direccion","valor":data.Direccion,},          
+            {"nombre":"Telefono","valor":data.Telefono,},          
+            {"nombre":"CorreoElectronico","valor":data.CorreoElectronico,},          
+            {"nombre":"IdEstadoCivil","valor":data.IdEstadoCivil,},          
 
             {
                 "nombre":"UsuarioCreacion",
@@ -15,10 +21,18 @@ class PersonaModel:
 insert into persona
 (
     Nombre,
-    Apellido
+    Apellido,
+    FechaNacimiento,
+    IdGenero,
+    Direccion,
+    Telefono,
+    CorreoElectronico,
+    IdEstadoCivil,
+    FechaCreacion,
+    UsuarioCreacion
 )
 values
-(%s,%s,NOW(),%s)
+(%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
 """
         ret = MySqldb().execute_insert(query,params=params)
         

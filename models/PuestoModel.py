@@ -18,6 +18,24 @@ where
         
         return ret
     
+    def ObtenerPuestoPorDepartamento(iddepartamento):
+        query = f"""
+select 
+    a.IdPuesto,
+    a.Nombre,
+    a.IdDepartamento,
+    b.Nombre Departamento
+from 
+    puesto a,
+    departamento b
+where
+    a.IdDepartamento = b.IdDepartamento 
+    and a.IdDepartamento = {iddepartamento}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
     def EliminarPuesto(id:int):
         query = f"""
 delete

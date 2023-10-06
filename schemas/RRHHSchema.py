@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 
 class EstadoCivilRequest(BaseModel):
@@ -18,3 +18,14 @@ class DepartamentoRequest(BaseModel):
 class PuestoRequest(BaseModel):
     Nombre:str
     IdDepartamento:int
+
+class PersonaRequest(BaseModel):
+    IdPersona:int
+    Nombre:str
+    Apellido:str
+    FechaNacimiento:date
+    IdGenero:int
+    IdEstadoCivil:int
+    Direccion:str
+    Telefono:str
+    CorreoElectronioco:str

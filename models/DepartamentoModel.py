@@ -18,6 +18,23 @@ where
         
         return ret
     
+    def ObtenerDepartamentoPorEmpresa(idempresa):
+        query = f"""
+select 
+    a.IdDepartamento,
+    a.Nombre,
+    a.IdEmpresa,
+    b.Nombre Empresa
+from 
+    departamento a,
+    empresa b
+where
+    a.IdEmpresa = b.IdEmpresa 
+    and a.IdEmpresa = {idempresa}
+"""
+        ret = MySqldb().execute_query(query)        
+        return ret
+    
     def EliminarDepartamento(id:int):
         query = f"""
 delete

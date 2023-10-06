@@ -6,6 +6,7 @@ from models.InasistenciaModel import InasistenciaModel
 from models.PeriodoPlanillaModel import PeriodoPlanillaModel
 from models.EmpleadoModel import EmpleadoModel
 from schemas.NominaSchemas import *
+from utils.NominaUtil import NominaUtil
 
 
 router = APIRouter(
@@ -102,7 +103,6 @@ async def periodoplanilla_get():
 
 @routerPeriodoPlanilla.put("/periodoplanilla/{IdUsuario}")
 async def periodoplanilla_put(IdUsuario,model:PeriodoPlanillaRequest):
-    print(model)
     count = 1
     for _ in range(model.Cantidad): 
         model.Mes = count       
@@ -137,6 +137,10 @@ async def empleado_get():
 async def empleadocontratado_get():
     empleado = EmpleadoModel.ObtenerEmpleadoContratado()
     return empleado
+
+@routerEmpleado.put('/empleado/{idusuario}')
+async def empleado_put(IdUsuario,model:NuevoEmpleadoRequest):
+    return NominaUtil.CrearEmpleado(IdUsuario,model)
 
 
 router.include_router(routerStatusEmpleado)

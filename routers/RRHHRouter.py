@@ -91,6 +91,11 @@ async def departamento_get():
     departamento = DepartamentoModel.ObtenerTodosDepartamento()
     return departamento
 
+@routerDepartamento.get('/departamentoporempresa/{idempresa}')
+async def departamento_get(idempresa:int):
+    departamento = DepartamentoModel.ObtenerDepartamentoPorEmpresa(idempresa)
+    return departamento
+
 @routerDepartamento.put("/departamento/{IdUsuario}")
 async def departamento_put(IdUsuario,model:DepartamentoRequest):
     DepartamentoModel.InsertarDepartamento(model,IdUsuario)
@@ -117,6 +122,11 @@ routerPuesto = APIRouter(
 @routerPuesto.get('/puesto')
 async def puesto_get():
     puesto = PuestoModel.ObtenerTodosPuesto()
+    return puesto
+
+@routerPuesto.get('/puestopordepto/{iddepto}')
+async def puesto_get(iddepto:int):
+    puesto = PuestoModel.ObtenerPuestoPorDepartamento(iddepto)
     return puesto
 
 @routerPuesto.put("/puesto/{IdUsuario}")
