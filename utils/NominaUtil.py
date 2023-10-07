@@ -1,10 +1,14 @@
+from fastapi import status
+from fastapi.responses import JSONResponse
 from schemas.RRHHSchema import PersonaRequest
 from schemas.NominaSchemas import NuevoEmpleadoRequest, EmpleadoRequest
 from models.PersonaModel import PersonaModel
+from models.EmpleadoModel import EmpleadoModel
 
 class NominaUtil:
     def CrearEmpleado(idusuario,model:NuevoEmpleadoRequest):
         persona = PersonaRequest(
+            IdPersona=0,
             Nombre=model.Nombre,
             Apellido=model.Apellido,
             FechaNacimiento=model.FechaNacimiento,
@@ -12,11 +16,53 @@ class NominaUtil:
             IdEstadoCivil=model.IdEstadoCivil,
             Direccion=model.Direccion,
             Telefono=model.Telefono,
-            CorreoElectronioco=model.CorreoElectronioco
+            CorreoElectronico=model.CorreoElectronico
         )
 
-        ret = PersonaModel.InsertarPersona(persona,idusuario)
+        try:
+            ret = PersonaModel.InsertarPersona(persona,idusuario)
+        except Exception as ex:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":str(ex)
+                }
+            )
+        
+        if ret is None:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":"Error al crear empleado"
+                }
+            )
 
-        print(ret)
+        empleado = EmpleadoRequest(
+            IdEmpleado=0,
+            IdPersona=ret,
+            IdSucursal=model.IdSucursal,
+            FechaContratacion=model.FechaContratacion,
+            IdPuesto=model.IdPuesto,
+            IdStatusEmpleado=model.IdStatusEmpleado,
+            IngresoSueldoBase=model.IngresoSueldoBase,
+            IngresoBonificacionDecreto=model.IngresoBonificacionDecreto,
+            IngresoOtrosIngresos=model.IngresoOtrosIngresos,
+            DescuentoIgss=model.DescuentoIgss,
+            DescuentoIsr=model.DescuentoIsr,
+            DescuentoInasistencias=model.DescuentoInasistencias
+        )
 
-        return
+        try:
+            retEmpl = EmpleadoModel.InsertarEmpleado(empleado,idusuario)            
+        except Exception as ex:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error":True,
+                    "mensaje":str(ex)
+                }
+            )
+        print(retEmpl)
+        return retEmpl

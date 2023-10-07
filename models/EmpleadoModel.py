@@ -21,6 +21,43 @@ where
         
         return ret
     
+    def ObtenerEmpleadoUnico(idempleado):
+        query = f"""
+select 
+    a.IdEmpleado,
+    a.IdPersona,
+    b.Nombre,
+    b.Apellido,
+    b.FechaNacimiento,
+    b.IdGenero,
+    b.IdEstadoCivil,
+    b.Direccion,
+    b.Telefono,
+    b.CorreoElectronico,
+    a.IdSucursal,
+    c.IdDepartamento,
+    a.IdPuesto,
+    a.FechaContratacion,
+    a.IdStatusEmpleado,
+    a.IngresoSueldoBase,
+    a.IngresoBonificacionDecreto,
+    a.IngresoOtrosIngresos,
+    a.DescuentoIgss,
+    a.DescuentoIsr,
+    a.DescuentoInasistencias
+from 
+    empleado a,
+    persona b,
+    puesto c
+where 
+    a.IdPersona = b.IdPersona
+    and a.IdPuesto = c.IdPuesto
+    and a.IdEmpleado = {idempleado}
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+    
     def ObtenerEmpleadoContratado():
         query = f"""
 select 
@@ -65,8 +102,17 @@ where
 
     def InsertarEmpleado(data,usuario):
         params = [
-            {"nombre":"Nombre","valor":data.Nombre,},            
-            {"nombre":"Apellido","valor":data.Apellido,},          
+            {"nombre":"IdPersona","valor":data.IdPersona,},            
+            {"nombre":"IdSucursal","valor":data.IdSucursal,},          
+            {"nombre":"FechaContratacion","valor":data.FechaContratacion,},          
+            {"nombre":"IdPuesto","valor":data.IdPuesto,},          
+            {"nombre":"IdStatusEmpleado","valor":data.IdStatusEmpleado,},          
+            {"nombre":"IngresoSueldoBase","valor":data.IngresoSueldoBase,},          
+            {"nombre":"IngresoBonificacionDecreto","valor":data.IngresoBonificacionDecreto,},          
+            {"nombre":"IngresoOtrosIngresos","valor":data.IngresoOtrosIngresos,},          
+            {"nombre":"DescuentoIgss","valor":data.DescuentoIgss,},          
+            {"nombre":"DescuentoIsr","valor":data.DescuentoIsr,},          
+            {"nombre":"DescuentoInasistencias","valor":data.DescuentoInasistencias,},          
 
             {
                 "nombre":"UsuarioCreacion",
@@ -74,13 +120,24 @@ where
             }
         ]
         query = f"""
-insert into persona
+insert into empleado
 (
-    Nombre,
-    Apellido
+    IdPersona,
+    IdSucursal,
+    FechaContratacion,
+    IdPuesto,
+    IdStatusEmpleado,
+    IngresoSueldoBase,
+    IngresoBonificacionDecreto,
+    IngresoOtrosIngresos,
+    DescuentoIgss,
+    DescuentoIsr,
+    DescuentoInasistencias,
+    FechaCreacion,
+    UsuarioCreacion
 )
 values
-(%s,%s,NOW(),%s)
+(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NOW(),%s)
 """
         ret = MySqldb().execute_insert(query,params=params)
         

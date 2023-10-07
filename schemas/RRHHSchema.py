@@ -28,4 +28,4 @@ class PersonaRequest(BaseModel):
     IdEstadoCivil:int
     Direccion:str
     Telefono:str
-    CorreoElectronioco:str
+    CorreoElectronico:str

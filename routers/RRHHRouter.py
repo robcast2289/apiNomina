@@ -5,6 +5,7 @@ from models.EstadoCivilModel import EstadoCivilModel
 from models.TipoDocumentoModel import TipoDocumentoModel
 from models.DepartamentoModel import DepartamentoModel
 from models.PuestoModel import PuestoModel
+from models.DocumentosPersonaModel import DocumentosPersonaModel
 from schemas.RRHHSchema import *
 
 
@@ -147,7 +148,20 @@ async def puesto_post(IdUsuario,IdPuesto,model:PuestoRequest):
 
 
 
+# Documento Persona
+routerDocumentosPersona = APIRouter(
+    tags=["DocumentosPersona"],
+)
+
+@routerDocumentosPersona.get('/documentospersona/{idpersona}')
+async def documentospersona_get(idpersona):
+    documentospersona = DocumentosPersonaModel.ObtenerTodosDocumentosPersona(idpersona  )
+    return documentospersona
+
+
+
 router.include_router(routerEstadoCivil)
 router.include_router(routerTipoDocumento)
 router.include_router(routerDepartamento)
 router.include_router(routerPuesto)
+router.include_router(routerDocumentosPersona)

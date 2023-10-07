@@ -133,15 +133,21 @@ async def empleado_get():
     empleado = EmpleadoModel.ObtenerTodosEmpleado()
     return empleado
 
+@routerEmpleado.get('/empleado/{idempleado}')
+async def empleadocontratado_get(idempleado):
+    empleado = EmpleadoModel.ObtenerEmpleadoUnico(idempleado)[0]
+    return empleado
+
 @routerEmpleado.get('/empleadocontratado')
 async def empleadocontratado_get():
     empleado = EmpleadoModel.ObtenerEmpleadoContratado()
     return empleado
 
 @routerEmpleado.put('/empleado/{idusuario}')
-async def empleado_put(IdUsuario,model:NuevoEmpleadoRequest):
-    return NominaUtil.CrearEmpleado(IdUsuario,model)
-
+async def empleado_put(idusuario,model:NuevoEmpleadoRequest):
+    print(model)
+    return NominaUtil.CrearEmpleado(idusuario,model)
+    #return
 
 router.include_router(routerStatusEmpleado)
 router.include_router(routerInasistencia)

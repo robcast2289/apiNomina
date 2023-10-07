@@ -128,7 +128,7 @@ class MySqldb:
                                         
                     return result
                 else:
-                    return None
+                    return cursor._last_insert_id
         except (msql.DatabaseError, msql.InterfaceError) as e:
             return {"OOPS": str(e)}
         finally:
