@@ -18,7 +18,36 @@ class PeriodoPlanillaRequest(BaseModel):
     Mes:int
     Cantidad:int
 
+
+class CuentaBancariaEmpleadoRequest(BaseModel):
+    IdEmpleado:int
+    IdBanco:int
+    NumeroDeCuenta:str
+
+
 class NuevoEmpleadoRequest(BaseModel):
+    Nombre:str
+    Apellido:str
+    FechaNacimiento:date
+    IdGenero:int
+    IdEstadoCivil:int
+    Direccion:str
+    Telefono:str
+    CorreoElectronico:str
+    IdSucursal:int
+    IdPuesto:int
+    FechaContratacion:date
+    IdStatusEmpleado:int
+    IngresoSueldoBase:float
+    IngresoBonificacionDecreto:float
+    IngresoOtrosIngresos:float
+    DescuentoIgss:float
+    DescuentoIsr:float
+    DescuentoInasistencias:float
+
+class EditarEmpleadoRequest(BaseModel):
+    IdEmpleado:int
+    IdPersona:int
     Nombre:str
     Apellido:str
     FechaNacimiento:date

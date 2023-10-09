@@ -5,6 +5,7 @@ from models.StatusEmpleadoModel import StatusEmpleadoModel
 from models.InasistenciaModel import InasistenciaModel
 from models.PeriodoPlanillaModel import PeriodoPlanillaModel
 from models.EmpleadoModel import EmpleadoModel
+from models.CuentaBancariaEmpleadoModel import CuentaBancariaEmpleadoModel
 from schemas.NominaSchemas import *
 from utils.NominaUtil import NominaUtil
 
@@ -149,7 +150,34 @@ async def empleado_put(idusuario,model:NuevoEmpleadoRequest):
     return NominaUtil.CrearEmpleado(idusuario,model)
     #return
 
+@routerEmpleado.post('/empleado/{idusuario}/{idempleado}')
+async def empleado_post(idusuario,idempleado,model:EditarEmpleadoRequest):
+    return NominaUtil.actualizarEmpleado(idusuario,model)
+
+
+# Cuenta Bancaria Empleado
+routerCuentaBancariaEmpleado = APIRouter(
+    tags=["CuentaBancariaEmpleado"],
+)
+
+@routerCuentaBancariaEmpleado.get('/cuentabancariaempleado/{idempelado}')
+async def cuentabancariaempleado_get(idempelado):
+    cuentabancariaempleado = CuentaBancariaEmpleadoModel.ObtenerTodosCuentaBancariaEmpleado(idempelado  )
+    return cuentabancariaempleado
+
+@routerCuentaBancariaEmpleado.put("/cuentabancariaempleado/{IdUsuario}")
+async def cuentabancariaempleado_put(IdUsuario,model:CuentaBancariaEmpleadoRequest):
+    CuentaBancariaEmpleadoModel.InactivarUltimaCuentaBancaria(model.IdEmpleado)
+    CuentaBancariaEmpleadoModel.InsertarCuentaBancariaEmpleado(model,IdUsuario)
+    return
+
+@routerCuentaBancariaEmpleado.delete("/cuentabancariaempleado/{idcuenta}")
+async def cuentabancariaempleado_delete(idcuenta):
+    ret = CuentaBancariaEmpleadoModel.EliminarCuentaBancariaEmpleado(idcuenta)
+    return ret
+
 router.include_router(routerStatusEmpleado)
 router.include_router(routerInasistencia)
 router.include_router(routerPeriodoPlanilla)
 router.include_router(routerEmpleado)
+router.include_router(routerCuentaBancariaEmpleado)

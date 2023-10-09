@@ -19,6 +19,13 @@ class PuestoRequest(BaseModel):
     Nombre:str
     IdDepartamento:int
 
+
+class DocumentosPersonaRequest(BaseModel):
+    IdTipoDocumento:int
+    IdPersona:int
+    NoDocumento:str
+    
+
 class PersonaRequest(BaseModel):
     IdPersona:int
     Nombre:str

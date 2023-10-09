@@ -158,6 +158,15 @@ async def documentospersona_get(idpersona):
     documentospersona = DocumentosPersonaModel.ObtenerTodosDocumentosPersona(idpersona  )
     return documentospersona
 
+@routerDocumentosPersona.put("/documentospersona/{IdUsuario}")
+async def documentospersona_put(IdUsuario,model:DocumentosPersonaRequest):
+    DocumentosPersonaModel.InsertarDocumentosPersona(model,IdUsuario)
+    return
+
+@routerDocumentosPersona.delete("/documentospersona/{IdTipoDocuemento}/{IdPersona}")
+async def documentospersona_delete(IdTipoDocuemento,IdPersona):
+    ret = DocumentosPersonaModel.EliminarDocumentosPersona(IdTipoDocuemento,IdPersona)
+    return ret
 
 
 router.include_router(routerEstadoCivil)
