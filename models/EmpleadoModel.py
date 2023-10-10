@@ -54,8 +54,7 @@ where
     and a.IdPuesto = c.IdPuesto
     and a.IdEmpleado = {idempleado}
 """
-        ret = MySqldb().execute_query(query)
-        
+        ret = MySqldb().execute_query(query)        
         return ret
     
     def ObtenerEmpleadoContratado():

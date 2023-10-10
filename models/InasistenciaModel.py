@@ -110,3 +110,20 @@ where
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret
+    
+
+    def BuscaInasistenciaEmpleado(data,IdEmpleado):
+        params = [
+            #{"nombre":"IdEmpleado","valor":data.IdEmpleado,},            
+            {"nombre":"FechaInicial","valor":data["FechaInicio"],},            
+            {"nombre":"FechaFinal","valor":data["FechaFin"],},                  
+        ]
+        query = f"""
+select * from inasistencia a
+where
+    a.IdEmpleado={IdEmpleado}
+    and a.FechaInicial >= %s and a.FechaFinal <= %s
+"""
+        ret = MySqldb().execute_insert(query,params=params)
+        
+        return ret

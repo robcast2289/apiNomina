@@ -80,3 +80,8 @@ class EmpleadoRequest(BaseModel):
     DescuentoIgss:float
     DescuentoIsr:float
     DescuentoInasistencias:float
+
+
+class PlanillaCabeceraRequest(BaseModel):
+    Anio:int
+    Mes:int

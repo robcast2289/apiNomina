@@ -55,3 +55,23 @@ values
         
         return ret
     
+
+    def BuscarPeriodoPlanilla(anio,mes):
+        query = f"""
+select 
+    Anio,
+    Mes,
+    FechaInicio,
+    FechaFin
+from 
+    periodo_planilla
+where
+    Anio = {anio} 
+    and Mes = {mes} 
+order by
+    Anio, Mes
+"""
+        ret = MySqldb().execute_query(query)
+        
+        return ret
+

@@ -6,6 +6,8 @@ from models.InasistenciaModel import InasistenciaModel
 from models.PeriodoPlanillaModel import PeriodoPlanillaModel
 from models.EmpleadoModel import EmpleadoModel
 from models.CuentaBancariaEmpleadoModel import CuentaBancariaEmpleadoModel
+from models.PlanillaCabeceraModel import PlanillaCabeceraModel
+from models.PlanillaDetalleModel import PlanillaDetalleModel
 from schemas.NominaSchemas import *
 from utils.NominaUtil import NominaUtil
 
@@ -176,8 +178,57 @@ async def cuentabancariaempleado_delete(idcuenta):
     ret = CuentaBancariaEmpleadoModel.EliminarCuentaBancariaEmpleado(idcuenta)
     return ret
 
+
+
+# Planilla Cabecera
+routerPlanillaCabecera = APIRouter(
+    tags=["PlanillaCabecera"],
+)
+
+@routerPlanillaCabecera.get('/planillacabecera')
+async def planillacabecera_get():
+    planillacabecera = PlanillaCabeceraModel.ObtenerTodosPlanillaCabecera()
+    return planillacabecera
+
+@routerPlanillaCabecera.get('/planillacabecera/{anio}/{mes}')
+async def planillacabecera_get(anio,mes):
+    planillacabecera = PlanillaCabeceraModel.BuscarPlanillaCabecera(anio,mes)[0]
+    return planillacabecera
+
+@routerPlanillaCabecera.put("/planillacabecera/{IdUsuario}")
+async def planillacabecera_put(IdUsuario,model:PlanillaCabeceraRequest):
+    return NominaUtil.CrearPlanilla(IdUsuario,model)
+
+
+
+# Planilla Detalle
+routerPlanillaDetalle = APIRouter(
+    tags=["PlanillaDetalle"],
+)
+
+@routerPlanillaDetalle.get('/planilladetalle/{anio}/{mes}')
+async def planilladetalle_get(anio,mes):
+    planilladetalle = PlanillaDetalleModel.ObtenerTodosPlanillaDetalle(anio,mes)
+    return planilladetalle
+
+@routerPlanillaDetalle.post('/planilladetalle/crear/{IdUsuario}')
+async def planilladetalle_post(IdUsuario,model:PlanillaCabeceraRequest):
+    return NominaUtil.ReCrearPlanilla(IdUsuario,model)
+
+@routerPlanillaDetalle.post('/planilladetalle/calcular/{IdUsuario}')
+async def planilladetalle_post(IdUsuario,model:PlanillaCabeceraRequest):
+    return NominaUtil.CalcularPlanilla(IdUsuario,model)
+
+@routerPlanillaDetalle.post('/planilladetalle/pagar/{IdUsuario}')
+async def planilladetalle_post(IdUsuario,model:PlanillaCabeceraRequest):
+    return NominaUtil.PagarPlanilla(IdUsuario,model)
+
+
+
 router.include_router(routerStatusEmpleado)
 router.include_router(routerInasistencia)
 router.include_router(routerPeriodoPlanilla)
 router.include_router(routerEmpleado)
 router.include_router(routerCuentaBancariaEmpleado)
+router.include_router(routerPlanillaCabecera)
+router.include_router(routerPlanillaDetalle)
