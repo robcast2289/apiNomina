@@ -110,3 +110,77 @@ values
         
         return ret
     
+
+
+    def EliminarPlanillaCabecera(anio,mes):
+        query = f"""
+delete
+from planilla_cabecera
+where 
+    anio = {anio} 
+    and mes = {mes}
+"""
+        ret = MySqldb().execute_query(query)
+        return ret
+    
+
+
+    def ActualizarFechaCalculo(data,usuario):
+        params = [
+            {"nombre":"UsuarioCreacion","valor":usuario,},
+            {"nombre":"Anio","valor":data.Anio,},            
+            {"nombre":"Mes","valor":data.Mes,},            
+        ]
+        query = f"""
+update planilla_cabecera
+set
+    FechaHoraCalculada=NOW(),
+    FechaModificacion=NOW(),
+    UsuarioCreacion=%s
+where
+    Anio=%s 
+    and Mes=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)        
+        return ret
+    
+
+    def ActualizarFechaCreado(data,usuario):
+        params = [
+            {"nombre":"UsuarioCreacion","valor":usuario,},
+            {"nombre":"Anio","valor":data.Anio,},            
+            {"nombre":"Mes","valor":data.Mes,},            
+        ]
+        query = f"""
+update planilla_cabecera
+set
+    FechaHoraCalculada=NULL,
+    FechaModificacion=NOW(),
+    UsuarioCreacion=%s
+where
+    Anio=%s 
+    and Mes=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)        
+        return ret
+    
+
+    def ActualizarFechaPagado(data,usuario):
+        params = [
+            {"nombre":"UsuarioCreacion","valor":usuario,},
+            {"nombre":"Anio","valor":data.Anio,},            
+            {"nombre":"Mes","valor":data.Mes,},            
+        ]
+        query = f"""
+update planilla_cabecera
+set
+    FechaHoraProcesada=NOW(),
+    FechaModificacion=NOW(),
+    UsuarioCreacion=%s
+where
+    Anio=%s 
+    and Mes=%s
+"""
+        ret = MySqldb().execute_insert(query,params=params)        
+        return ret
+    

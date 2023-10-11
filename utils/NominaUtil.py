@@ -195,6 +195,7 @@ class NominaUtil:
 
         print(ret)
         return
+
     
     def ReCrearPlanilla(usuario,model:PlanillaCabeceraRequest):
 
@@ -206,6 +207,7 @@ class NominaUtil:
             empleadoUnico = EmpleadoModel.ObtenerEmpleadoUnico(empleado["IdEmpleado"])[0]
             ret = PlanillaDetalleModel.InsertarPlanillaDetalle(empleadoUnico,model,usuario)
 
+        PlanillaCabeceraModel.ActualizarFechaCreado(model,usuario)
         return
     
 
@@ -292,9 +294,9 @@ class NominaUtil:
                 empleadoTable["IngresoOtrosIngresos"],
                 usuario
             )
-
+        PlanillaCabeceraModel.ActualizarFechaCalculo(model,usuario)
         return
 
 
     def PagarPlanilla(usuario,model:PlanillaCabeceraRequest):
-        pass
+        PlanillaCabeceraModel.ActualizarFechaPagado(model,usuario)

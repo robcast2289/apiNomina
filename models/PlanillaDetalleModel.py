@@ -28,6 +28,8 @@ from
 where
     a.IdEmpleado = b.IdEmpleado 
     and b.IdPersona = c.IdPersona 
+    and a.Anio = {anio} 
+    and a.Mes = {mes} 
 """
         ret = MySqldb().execute_query(query)
         

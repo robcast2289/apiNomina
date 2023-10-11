@@ -199,6 +199,33 @@ async def planillacabecera_get(anio,mes):
 async def planillacabecera_put(IdUsuario,model:PlanillaCabeceraRequest):
     return NominaUtil.CrearPlanilla(IdUsuario,model)
 
+@routerPlanillaCabecera.delete("/planillacabecera/{anio}/{mes}")
+async def planillacabecera_delete(anio,mes):
+    print(anio)
+    print(mes)
+    planilla = PlanillaCabeceraModel.BuscarPlanillaCabecera(anio,mes)
+    print(planilla)
+    if(len(planilla) == 0):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":"Planilla no encontrada'"
+            }
+        )
+    plan = planilla[0]
+    if not plan["FechaHoraCalculada"] is None:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "error":True,
+                "mensaje":"Solo se puede eliminar planillas en Estado 'Creado'"
+            }
+        )
+    retDet = PlanillaDetalleModel.EliminarPlanillaDetalle(anio,mes)
+    ret = PlanillaCabeceraModel.EliminarPlanillaCabecera(anio,mes)
+    return ret
+
 
 
 # Planilla Detalle
