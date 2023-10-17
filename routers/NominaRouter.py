@@ -42,7 +42,6 @@ async def statusempleado_delete(IdStatusEmpleado):
 @routerStatusEmpleado.post("/statusempleado/{IdUsuario}/{IdStatusEmpleado}")
 async def statusempleado_post(IdUsuario,IdStatusEmpleado,model:StatusEmpleadoRequest):
     ret = StatusEmpleadoModel.ActualizarStatusEmpleado(model,IdUsuario,IdStatusEmpleado)
-    print(ret)
     return ret
 
 
@@ -89,7 +88,6 @@ async def inasistencia_delete(IdInasistencia):
 @routerInasistencia.post("/inasistencia/{IdUsuario}/{IdInasistencia}")
 async def inasistencia_post(IdUsuario,IdInasistencia,model:InasistenciaRequest):
     ret = InasistenciaModel.ActualizarInasistencia(model,IdUsuario,IdInasistencia)
-    print(ret)
     return ret
 
 
@@ -121,7 +119,6 @@ async def periodoplanilla_delete(Anio:int,Mes:int):
 #@routerPeriodoPlanilla.post("/periodoplanilla/{IdUsuario}/{IdPeriodoPlanilla}")
 #async def periodoplanilla_post(IdUsuario,IdPeriodoPlanilla,model:PeriodoPlanillaRequest):
 #    ret = PeriodoPlanillaModel.ActualizarPeriodoPlanilla(model,IdUsuario,IdPeriodoPlanilla)
-#    print(ret)
 #    return ret
 
 
@@ -148,9 +145,7 @@ async def empleadocontratado_get():
 
 @routerEmpleado.put('/empleado/{idusuario}')
 async def empleado_put(idusuario,model:NuevoEmpleadoRequest):
-    print(model)
     return NominaUtil.CrearEmpleado(idusuario,model)
-    #return
 
 @routerEmpleado.post('/empleado/{idusuario}/{idempleado}')
 async def empleado_post(idusuario,idempleado,model:EditarEmpleadoRequest):
@@ -201,10 +196,8 @@ async def planillacabecera_put(IdUsuario,model:PlanillaCabeceraRequest):
 
 @routerPlanillaCabecera.delete("/planillacabecera/{anio}/{mes}")
 async def planillacabecera_delete(anio,mes):
-    print(anio)
-    print(mes)
     planilla = PlanillaCabeceraModel.BuscarPlanillaCabecera(anio,mes)
-    print(planilla)
+
     if(len(planilla) == 0):
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,

@@ -32,7 +32,7 @@ async def login(request:Request):
 
         data = form.get("data")
         log = form.get('log')
-        print(log)
+
         dataObject = json.loads(data)
         logObject = json.loads(log)
 
@@ -40,11 +40,10 @@ async def login(request:Request):
             IdUsuario=dataObject["IdUsuario"],
             Password=dataObject["Password"]
         )      
-        print(model)
+
         ret = UsuarioModel.BuscarUsuario(model.IdUsuario)    
         if ret is None:
             ret2=UsuarioModel.InsertaBitacora(model.IdUsuario,4,userAgent,ip,"",logObject["os"],logObject["device"],logObject["browser"])
-            print(ret2)
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={
@@ -107,11 +106,9 @@ async def login(request:Request):
 @router.get('/menu/{IdUsuario}')
 async def menu(IdUsuario):
     modulos = ModuloModel.ObtenerModulos(IdUsuario)
-    print(modulos)
     menuAll = []
 
     for modulo in modulos:
-        print(modulo)
         idModulo:int = int(modulo["IdModulo"])
         menus = MenuModel.ObtenerMenus(IdUsuario,idModulo)
 
@@ -148,7 +145,6 @@ async def recover(request:Request):
     form = await request.form()
 
     data = form.get("data")
-    print(data)
     dataObject = json.loads(data)
 
     model:LoginRequest = LoginRequest(

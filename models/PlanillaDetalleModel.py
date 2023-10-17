@@ -37,8 +37,6 @@ where
     
 
     def InsertarPlanillaDetalle(data,data2,usuario):
-        print(data)
-        print(data2)
         params = [
             {"nombre":"Anio","valor":data2.Anio,},            
             {"nombre":"Mes","valor":data2.Mes,},            

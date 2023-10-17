@@ -106,7 +106,6 @@ where
     a.IdEmpleado={data.IdEmpleado}
     and a.FechaInicial <= %s and a.FechaFinal >= %s
 """
-        print(query)
         ret = MySqldb().execute_insert(query,params=params)
         
         return ret

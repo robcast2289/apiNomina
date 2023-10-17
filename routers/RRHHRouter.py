@@ -39,7 +39,7 @@ async def estadocivil_delete(IdEstadoCivil):
 @routerEstadoCivil.post("/estadocivil/{IdUsuario}/{IdEstadoCivil}")
 async def estadocivil_post(IdUsuario,IdEstadoCivil,model:EstadoCivilRequest):
     ret = EstadoCivilModel.ActualizarEstadoCivil(model,IdUsuario,IdEstadoCivil)
-    print(ret)
+
     try:
         error = ret["OOPS"]
         return JSONResponse(
@@ -77,7 +77,6 @@ async def tipodocumento_delete(IdTipoDocumento):
 @routerTipoDocumento.post("/tipodocumento/{IdUsuario}/{IdTipoDocumento}")
 async def tipodocumento_post(IdUsuario,IdTipoDocumento,model:TipoDocumentoRequest):
     ret = TipoDocumentoModel.ActualizarTipoDocumento(model,IdUsuario,IdTipoDocumento)
-    print(ret)
     return ret
 
 
@@ -110,7 +109,6 @@ async def departamento_delete(IdDepartamento):
 @routerDepartamento.post("/departamento/{IdUsuario}/{IdDepartamento}")
 async def departamento_post(IdUsuario,IdDepartamento,model:DepartamentoRequest):
     ret = DepartamentoModel.ActualizarDepartamento(model,IdUsuario,IdDepartamento)
-    print(ret)
     return ret
 
 
@@ -143,7 +141,6 @@ async def puesto_delete(IdPuesto):
 @routerPuesto.post("/puesto/{IdUsuario}/{IdPuesto}")
 async def puesto_post(IdUsuario,IdPuesto,model:PuestoRequest):
     ret = PuestoModel.ActualizarPuesto(model,IdUsuario,IdPuesto)
-    print(ret)
     return ret
 
 

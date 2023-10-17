@@ -76,7 +76,6 @@ where IdUsuario = '{id}'
         return ret
     
     def InsertarUsuarios(data,usuario):
-        print(data.Fotografia)
         params = [
             {"nombre":"IdUsuario","valor":data.IdUsuario,},
             {"nombre":"Nombre","valor":data.Nombre,},

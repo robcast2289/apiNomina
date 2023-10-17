@@ -5,8 +5,7 @@ class UsuarioUtil:
     def validarPassword(pwd:str, idusuario:str):
         password = Cipher.vigenere_cipher(pwd,"analisisdesistemas","decrypt")
         empresa = EmpresaModel.ObtenerEmpresaUsuario(idusuario)[0]
-        print(password)
-        print(idusuario)
+
         indice=0
         mayusculas=0
         minusculas=0

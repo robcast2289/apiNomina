@@ -57,11 +57,6 @@ where IdOpcion = {id}
         return ret
     
     def InsertarOpcion(data,usuario):
-        #for campo,valor in data:
-        #    print(campo)
-        #    print(valor)
-
-        #print(data.Nombre)
         params = [
             {
                 "nombre":"IdMenu",
@@ -96,11 +91,6 @@ values
     
 
     def ActualizarOpcion(data,usuario,id):
-        for campo,valor in data:
-            print(campo)
-            print(valor)
-
-        print(data.Nombre)
         params = [
             {
                 "nombre":"IdMenu",

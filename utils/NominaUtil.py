@@ -69,7 +69,7 @@ class NominaUtil:
                     "mensaje":str(ex)
                 }
             )
-        print(retEmpl)
+
         return retEmpl
     
 
@@ -171,6 +171,7 @@ class NominaUtil:
                 }
             )
         
+        perido = PeriodoPlanillaModel.BuscarPeriodoPlanilla(model.Anio,model.Mes)[0]
         empleadosContratados = EmpleadoModel.ObtenerEmpleadoContratado()
 
         IngresoSalario:float = 0
@@ -190,14 +191,14 @@ class NominaUtil:
             DescuentoIsr += empleadoUnico["DescuentoIsr"]
             DescuentoInasistencias += empleadoUnico["DescuentoInasistencias"]
 
-            ret = PlanillaDetalleModel.InsertarPlanillaDetalle(empleadoUnico,model,usuario)
-            print(ret)
+            if empleadoUnico["FechaContratacion"] <= perido["FechaFin"]:
+                ret = PlanillaDetalleModel.InsertarPlanillaDetalle(empleadoUnico,model,usuario)
 
-        print(ret)
         return
 
     
     def ReCrearPlanilla(usuario,model:PlanillaCabeceraRequest):
+        perido = PeriodoPlanillaModel.BuscarPeriodoPlanilla(model.Anio,model.Mes)[0]
 
         ret = PlanillaDetalleModel.EliminarPlanillaDetalle(model.Anio,model.Mes)
 
@@ -205,7 +206,8 @@ class NominaUtil:
 
         for empleado in empleadosContratados:
             empleadoUnico = EmpleadoModel.ObtenerEmpleadoUnico(empleado["IdEmpleado"])[0]
-            ret = PlanillaDetalleModel.InsertarPlanillaDetalle(empleadoUnico,model,usuario)
+            if empleadoUnico["FechaContratacion"] <= perido["FechaFin"]:
+                ret = PlanillaDetalleModel.InsertarPlanillaDetalle(empleadoUnico,model,usuario)
 
         PlanillaCabeceraModel.ActualizarFechaCreado(model,usuario)
         return
@@ -270,7 +272,6 @@ class NominaUtil:
 
         dias = 0
         if(len(inasistencias) > 0):
-            print(inasistencias)
             for inasistencia in inasistencias:
                 dias += (inasistencia["FechaFinal"]-inasistencia["FechaInicial"]).days + 1
 

@@ -63,11 +63,6 @@ where IdEmpresa = {id}
         return ret
     
     def InsertarEmpresa(data,usuario):
-        for campo,valor in data:
-            print(campo)
-            print(valor)
-
-        print(data.Nombre)
         params = [
             {"nombre":"Nombre","valor":data.Nombre,},
             {"nombre":"Direccion","valor":data.Direccion,},
@@ -112,7 +107,6 @@ values
     
 
     def ActualizarEmpresa(data,usuario,idempresa):
-        print(idempresa)
         params = [
             {"nombre":"Nombre","valor":data.Nombre,},
             {"nombre":"Direccion","valor":data.Direccion,},

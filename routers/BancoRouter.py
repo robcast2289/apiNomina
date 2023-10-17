@@ -32,7 +32,6 @@ async def bancos_delete(IdBanco):
 @routerBanco.post("/bancos/{IdUsuario}/{IdBanco}")
 async def bancos_post(IdUsuario,IdBanco,model:BancoRequest):
     ret = BancoModel.ActualizarBanco(model,IdUsuario,IdBanco)
-    print(ret)
     return ret
 
 

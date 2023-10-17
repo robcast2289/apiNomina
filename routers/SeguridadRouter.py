@@ -52,7 +52,6 @@ async def modulos_delete(IdModulo):
 @routerModulo.post("/generales/modulos/{IdUsuario}/{IdModulo}")
 async def modulos_post(IdUsuario,IdModulo,model:ModuloRequest):
     ret = ModuloModel.ActualizarModulo(model,IdUsuario,IdModulo)
-    print(ret)
     return ret
 
 
@@ -229,8 +228,7 @@ routerUsuario = APIRouter(
 def validarPassword(pwd:str, idusuario:str):
     password = Cipher.vigenere_cipher(pwd,"analisisdesistemas","decrypt")
     empresa = EmpresaModel.ObtenerEmpresaUsuario(idusuario)[0]
-    print(password)
-    print(idusuario)
+
     indice=0
     mayusculas=0
     minusculas=0
@@ -348,14 +346,12 @@ async def usuarios_post(IdUsuario,IdUsuarioTable,request:Request):
     )
 
     #ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
-    #print(ret)
     #return ret
 
     passValid = validarPassword(dataObject["Password"],IdUsuarioTable)
 
     if passValid == True:
         ret = UsuarioTableModel.ActualizarUsuarios(model,IdUsuario,IdUsuarioTable)
-        print(ret)
         return ret
     else:
         return JSONResponse(

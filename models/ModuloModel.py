@@ -48,11 +48,6 @@ where IdModulo = {id}
         return ret
     
     def InsertarModulo(data,usuario):
-        for campo,valor in data:
-            print(campo)
-            print(valor)
-
-        print(data.Nombre)
         params = [
             {
                 "nombre":"Nombre",
@@ -79,11 +74,6 @@ values
     
 
     def ActualizarModulo(data,usuario,idmodulo):
-        for campo,valor in data:
-            print(campo)
-            print(valor)
-
-        print(data.Nombre)
         params = [
             {
                 "nombre":"Nombre",
