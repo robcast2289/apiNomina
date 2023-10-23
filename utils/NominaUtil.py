@@ -228,8 +228,8 @@ class NominaUtil:
         InasistenciaCalculado = sueldoPorDia * diasInasistencia
         igssCalculado = decimal.Decimal(sueldoCalculado-InasistenciaCalculado) * decimal.Decimal(0.0483)
         # formula de Proyeccion: Sueldo 12 meses - Monto fijo exento (48000) => * %5  => /12
-        rentaBruta = (SueldoBase * 12)
-        rentaNeta = (rentaBruta - 48000)
+        rentaBruta = (SueldoBase * 12) + (BonoDecreto * 12)
+        rentaNeta = (rentaBruta - 48000 - (igssCalculado * 12))
         if rentaNeta > 0:
             isrCalculado = (rentaNeta * decimal.Decimal(0.05) ) / 12
         else:
